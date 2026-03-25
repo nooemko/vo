@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>Product Page Preview</title>
+  <style>
+    body { margin: 0; background: #1a1a2e; font-family: sans-serif; }
+    .header { padding: 16px 24px; background: #16213e; color: white; display: flex; gap: 24px; align-items: center; position: sticky; top: 0; z-index: 10; }
+    .header h2 { margin: 0; font-size: 14px; }
+    .btn { padding: 6px 14px; border-radius: 6px; border: none; cursor: pointer; font-size: 13px; }
+    .btn-active { background: #e94560; color: white; }
+    .btn-inactive { background: #0f3460; color: #aaa; }
+    .container { display: flex; overflow-x: auto; gap: 32px; padding: 24px; }
+    .page-wrapper { flex: 0 0 auto; }
+    .page-wrapper h3 { color: #ccc; font-size: 13px; margin-bottom: 8px; text-align: center; }
+    img { max-width: 900px; width: 100%; display: block; border: 1px solid #333; border-radius: 8px; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h2>Viaccess-Orca — עיצובים</h2>
+    <button class="btn btn-active" onclick="show('old')">Product Page — ישן</button>
+    <button class="btn btn-inactive" onclick="show('new')">Product Page — חדש</button>
+    <button class="btn btn-inactive" onclick="show('both')">השוואה</button>
+    <button class="btn btn-inactive" onclick="show('events')">Events — Redesign</button>
+  </div>
+
+  <div id="tab-old" class="tab-content active">
+    <div class="container">
+      <div class="page-wrapper">
+        <h3>PRODUCT PAGE — ישן</h3>
+        <img src="file:///C:/Users/TomerPinto/Downloads/PRODUCT PAGE.svg" alt="עיצוב ישן" />
+      </div>
+    </div>
+  </div>
+
+  <div id="tab-new" class="tab-content">
+    <div class="container">
+      <div class="page-wrapper">
+        <h3>PRODUCT PAGE — חדש</h3>
+        <img src="file:///C:/Users/TomerPinto/Downloads/PRODUCT PAGE (1).svg" alt="עיצוב חדש" />
+      </div>
+    </div>
+  </div>
+
+  <div id="tab-both" class="tab-content">
+    <div class="container">
+      <div class="page-wrapper">
+        <h3>ישן</h3>
+        <img src="file:///C:/Users/TomerPinto/Downloads/PRODUCT PAGE.svg" alt="עיצוב ישן" />
+      </div>
+      <div class="page-wrapper">
+        <h3>חדש</h3>
+        <img src="file:///C:/Users/TomerPinto/Downloads/PRODUCT PAGE (1).svg" alt="עיצוב חדש" />
+      </div>
+    </div>
+  </div>
+
+  <div id="tab-events" class="tab-content">
+    <div class="container">
+      <div class="page-wrapper" style="flex: 0 0 100%; max-width: 100%;">
+        <h3>Events Page — Redesign בשפה החדשה</h3>
+        <iframe src="events-redesign.html" style="width:100%; height:90vh; border:1px solid #333; border-radius:8px;"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function show(tab) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.btn').forEach(el => { el.className = 'btn btn-inactive'; });
+      document.getElementById('tab-' + tab).classList.add('active');
+      event.target.className = 'btn btn-active';
+    }
+  </script>
+</body>
+</html>
