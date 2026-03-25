@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog — Viaccess-Orca</title>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --dark:      #263338;
+      --darker:    #1a2428;
+      --card-bg:   #2e3e44;
+      --purple:    #A3669C;
+      --purple-dim: rgba(163,102,156,.15);
+      --white:     #FFFFFF;
+      --text:      rgba(255,255,255,.88);
+      --text-dim:  rgba(255,255,255,.55);
+      --text-faint:rgba(255,255,255,.35);
+      --border:    rgba(255,255,255,.1);
+    }
+
+    body {
+      font-family: 'Rubik', system-ui, sans-serif;
+      background: var(--dark);
+      color: var(--text);
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--darker);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 40px; height: 72px;
+    }
+    .nav-logo { font-size: 20px; font-weight: 800; color: var(--white); letter-spacing: -.5px; }
+    .nav-logo span { color: var(--purple); }
+    .nav-links { display: flex; gap: 32px; align-items: center; }
+    .nav-links a { text-decoration: none; color: var(--text-dim); font-size: 14px; font-weight: 500; transition: color .2s; }
+    .nav-links a:hover { color: var(--white); }
+    .nav-links a.active { color: var(--purple); }
+    .nav-cta { background: var(--purple); color: #fff; padding: 9px 20px; border-radius: 4px; font-size: 13px; font-weight: 600; text-decoration: none; transition: opacity .2s; }
+    .nav-cta:hover { opacity: .85; }
+
+    /* ── HERO ── */
+    .hero {
+      background: var(--darker);
+      padding: 72px 40px 64px;
+      border-bottom: 1px solid var(--border);
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; top: -120px; right: -80px;
+      width: 500px; height: 500px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(163,102,156,.18) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero::after {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+      background: var(--purple);
+    }
+    .hero-inner { max-width: 1100px; margin: 0 auto; }
+    .hero-label {
+      display: inline-block; background: var(--purple-dim); color: var(--purple);
+      border: 1px solid rgba(163,102,156,.3);
+      font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+      padding: 4px 12px; border-radius: 20px; margin-bottom: 20px;
+    }
+    .hero h1 {
+      font-size: 52px; font-weight: 800; color: var(--white);
+      line-height: 1.1; letter-spacing: -1px; margin-bottom: 16px;
+    }
+    .hero p {
+      font-size: 17px; color: var(--text-dim); max-width: 520px; line-height: 1.65; font-weight: 300;
+    }
+
+    /* ── FILTER BAR ── */
+    .filter-bar {
+      background: var(--darker);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 40px;
+      position: sticky; top: 72px; z-index: 90;
+    }
+    .filter-bar-inner { max-width: 1100px; margin: 0 auto; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+    .filter-label { font-size: 12px; color: var(--text-faint); font-weight: 500; margin-right: 4px; }
+    .filter-btn {
+      padding: 6px 14px; border-radius: 20px;
+      border: 1px solid var(--border);
+      font-size: 12px; font-weight: 500; cursor: pointer;
+      background: transparent; color: var(--text-dim);
+      font-family: 'Rubik', sans-serif;
+      transition: all .2s;
+    }
+    .filter-btn:hover { border-color: var(--purple); color: var(--purple); }
+    .filter-btn.active { background: var(--purple); border-color: var(--purple); color: #fff; }
+
+    /* ── MAIN LAYOUT ── */
+    .main { max-width: 1100px; margin: 0 auto; padding: 56px 40px; }
+
+    /* ── FEATURED POST ── */
+    .featured-post {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 0; border-radius: 12px; overflow: hidden;
+      border: 1px solid var(--border);
+      margin-bottom: 56px;
+      background: var(--card-bg);
+      transition: box-shadow .3s;
+    }
+    .featured-post:hover { box-shadow: 0 16px 48px rgba(0,0,0,.35); }
+    .featured-post-img {
+      min-height: 340px;
+      position: relative; overflow: hidden;
+    }
+    .featured-post-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .4s; }
+    .featured-post:hover .featured-post-img img { transform: scale(1.04); }
+    .featured-tag {
+      position: absolute; top: 20px; left: 20px;
+      background: var(--purple); color: #fff;
+      font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+      padding: 4px 10px; border-radius: 2px;
+    }
+    .featured-post-body {
+      padding: 40px 44px;
+      display: flex; flex-direction: column; justify-content: center;
+    }
+    .post-category {
+      font-size: 11px; font-weight: 600; color: var(--purple);
+      text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px;
+    }
+    .featured-post-body h2 {
+      font-size: 26px; font-weight: 700; color: var(--white);
+      line-height: 1.3; margin-bottom: 16px;
+    }
+    .featured-post-body p {
+      font-size: 14px; color: var(--text-dim); line-height: 1.7; margin-bottom: 28px;
+    }
+    .post-meta {
+      display: flex; align-items: center; gap: 16px;
+      font-size: 12px; color: var(--text-faint);
+    }
+    .post-meta-author { display: flex; align-items: center; gap: 8px; }
+    .author-avatar {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--purple-dim); border: 1px solid rgba(163,102,156,.3);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 700; color: var(--purple);
+    }
+    .read-more {
+      display: inline-flex; align-items: center; gap: 6px;
+      color: var(--purple); font-size: 13px; font-weight: 600;
+      text-decoration: none; margin-top: auto;
+      transition: gap .2s;
+    }
+    .read-more:hover { gap: 10px; }
+
+    /* ── BLOG GRID ── */
+    .section-header { margin-bottom: 28px; }
+    .section-header h3 { font-size: 20px; font-weight: 700; color: var(--white); }
+    .section-divider { width: 32px; height: 3px; background: var(--purple); margin-top: 10px; }
+
+    .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .blog-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px; overflow: hidden;
+      display: flex; flex-direction: column;
+      transition: box-shadow .25s, transform .25s, border-color .25s;
+    }
+    .blog-card:hover {
+      box-shadow: 0 12px 40px rgba(0,0,0,.3);
+      transform: translateY(-3px);
+      border-color: rgba(163,102,156,.35);
+    }
+    .blog-card-img {
+      height: 180px;
+      background: #1e2e34;
+      display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden;
+    }
+    .blog-card-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .4s; }
+    .blog-card:hover .blog-card-img img { transform: scale(1.04); }
+    .blog-card-img-tag {
+      position: absolute; top: 14px; left: 14px;
+      background: var(--purple-dim); color: var(--purple);
+      border: 1px solid rgba(163,102,156,.3);
+      font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .8px;
+      padding: 3px 9px; border-radius: 20px;
+    }
+    .blog-card-body { padding: 20px 22px 24px; flex: 1; display: flex; flex-direction: column; }
+    .blog-card-body h4 {
+      font-size: 15px; font-weight: 700; color: var(--white);
+      line-height: 1.4; margin-bottom: 10px;
+    }
+    .blog-card-body p {
+      font-size: 13px; color: var(--text-dim); line-height: 1.65;
+      margin-bottom: 20px; flex: 1;
+      display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .blog-card-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      padding-top: 16px; border-top: 1px solid var(--border);
+      margin-top: auto;
+    }
+    .blog-card-meta { display: flex; align-items: center; gap: 8px; }
+    .blog-card-meta .author-avatar { width: 24px; height: 24px; font-size: 10px; }
+    .blog-card-meta span { font-size: 12px; color: var(--text-faint); }
+    .blog-card-date { font-size: 11px; color: var(--text-faint); }
+
+    /* ── PAGINATION ── */
+    .pagination {
+      display: flex; align-items: center; justify-content: center;
+      gap: 8px; margin-top: 56px;
+    }
+    .page-btn {
+      width: 36px; height: 36px; border-radius: 6px;
+      border: 1px solid var(--border); background: transparent;
+      color: var(--text-dim); font-size: 13px; font-weight: 500;
+      cursor: pointer; font-family: 'Rubik', sans-serif;
+      display: flex; align-items: center; justify-content: center;
+      transition: all .2s;
+    }
+    .page-btn:hover { border-color: var(--purple); color: var(--purple); }
+    .page-btn.active { background: var(--purple); border-color: var(--purple); color: #fff; }
+    .page-btn.arrow { font-size: 16px; }
+    .page-dots { color: var(--text-faint); font-size: 14px; padding: 0 4px; }
+
+    /* ── NEWSLETTER BANNER ── */
+    .newsletter {
+      background: linear-gradient(135deg, rgba(163,102,156,.2) 0%, rgba(38,51,56,.6) 100%);
+      border: 1px solid rgba(163,102,156,.25);
+      border-radius: 12px; padding: 48px 56px;
+      text-align: center; margin-bottom: 56px;
+    }
+    .newsletter h3 { font-size: 26px; font-weight: 700; color: var(--white); margin-bottom: 10px; }
+    .newsletter p { font-size: 15px; color: var(--text-dim); margin-bottom: 28px; }
+    .newsletter-form { display: flex; gap: 10px; max-width: 420px; margin: 0 auto; }
+    .newsletter-form input {
+      flex: 1; padding: 10px 16px; border-radius: 6px;
+      border: 1px solid var(--border); background: rgba(255,255,255,.07);
+      color: var(--white); font-family: 'Rubik', sans-serif; font-size: 14px;
+      outline: none; transition: border-color .2s;
+    }
+    .newsletter-form input::placeholder { color: var(--text-faint); }
+    .newsletter-form input:focus { border-color: var(--purple); }
+    .newsletter-form button {
+      padding: 10px 20px; background: var(--purple); color: #fff;
+      border: none; border-radius: 6px; font-family: 'Rubik', sans-serif;
+      font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap;
+      transition: opacity .2s;
+    }
+    .newsletter-form button:hover { opacity: .85; }
+
+    /* ── FOOTER ── */
+    footer { background: var(--darker); border-top: 1px solid var(--border); padding: 56px 40px 32px; }
+    .footer-inner { max-width: 1100px; margin: 0 auto; }
+    .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; padding-bottom: 40px; border-bottom: 1px solid var(--border); margin-bottom: 32px; }
+    .footer-brand .logo { font-size: 18px; font-weight: 800; color: #fff; margin-bottom: 12px; }
+    .footer-brand .logo span { color: var(--purple); }
+    .footer-brand p { font-size: 13px; color: var(--text-dim); line-height: 1.7; max-width: 240px; }
+    .footer-col h5 { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--white); margin-bottom: 16px; }
+    .footer-col a { display: block; font-size: 13px; color: var(--text-dim); text-decoration: none; margin-bottom: 8px; transition: color .2s; }
+    .footer-col a:hover { color: #fff; }
+    .footer-bottom { display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--text-faint); }
+    .footer-bottom-links { display: flex; gap: 20px; }
+    .footer-bottom-links a { color: var(--text-faint); text-decoration: none; }
+    .footer-bottom-links a:hover { color: var(--text-dim); }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Viaccess<span>-Orca</span></div>
+  <div class="nav-links">
+    <a href="#">TV & Video Solutions</a>
+    <a href="#">About Us</a>
+    <a href="#">News & Events</a>
+    <a href="#">Resources</a>
+    <a href="#" class="active">Blog</a>
+    <a href="#" class="nav-cta">Contact Us</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-label">Insights & Perspectives</div>
+    <h1>The VO Blog</h1>
+    <p>Expert perspectives on streaming, content security, monetization, and the future of TV.</p>
+  </div>
+</section>
+
+<!-- FILTER BAR -->
+<div class="filter-bar">
+  <div class="filter-bar-inner">
+    <span class="filter-label">Topic:</span>
+    <button class="filter-btn active">All</button>
+    <button class="filter-btn">Innovation</button>
+    <button class="filter-btn">OTT & Streaming</button>
+    <button class="filter-btn">Content Security</button>
+    <button class="filter-btn">Monetization</button>
+    <button class="filter-btn">Industry Trends</button>
+    <button class="filter-btn">Company News</button>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- FEATURED POST -->
+  <a href="https://www.viaccess-orca.com/blog/how-ai-is-changing-content-discovery" style="text-decoration:none;color:inherit;display:block;">
+  <div class="featured-post">
+    <div class="featured-post-img">
+      <img src="https://www.viaccess-orca.com/hs-fs/hubfs/ai%20content%20discovery.jpg?width=1200&height=600" alt="How AI Is Changing Content Discovery">
+      <div class="featured-tag">Featured</div>
+    </div>
+    <div class="featured-post-body">
+      <div class="post-category">Analytics</div>
+      <h2>How AI Is Changing Content Discovery</h2>
+      <p>AI is revolutionizing content discovery by enhancing user interaction and recommendation precision. Solid foundations and strategic alignment are key to unlocking its full potential for streaming platforms.</p>
+      <div class="post-meta" style="margin-bottom: 28px;">
+        <div class="post-meta-author">
+          <div class="author-avatar">HT</div>
+          <span>Hadar Tel Mizrahi</span>
+        </div>
+        <span>·</span>
+        <span>Mar 18, 2026</span>
+      </div>
+      <span class="read-more">
+        Read Article
+        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </span>
+    </div>
+  </div>
+  </a>
+
+  <!-- NEWSLETTER -->
+  <div class="newsletter">
+    <h3>Stay Ahead of the Curve</h3>
+    <p>Get the latest insights on streaming, content security, and industry trends delivered to your inbox.</p>
+    <div class="newsletter-form">
+      <input type="email" placeholder="Enter your email address">
+      <button>Subscribe</button>
+    </div>
+  </div>
+
+  <!-- RECENT POSTS -->
+  <div class="section-header">
+    <h3>Latest Articles</h3>
+    <div class="section-divider"></div>
+  </div>
+
+  <div class="blog-grid">
+
+    <a href="https://www.viaccess-orca.com/blog/why-all-companies-need-more-women-in-tech" style="text-decoration:none;color:inherit;">
+    <div class="blog-card">
+      <div class="blog-card-img">
+        <img src="https://www.viaccess-orca.com/hs-fs/hubfs/iwd%202025%20placeholder%202.jpg?width=800&height=400" alt="Women in Tech">
+        <div class="blog-card-img-tag">Trends & Innovation</div>
+      </div>
+      <div class="blog-card-body">
+        <h4>Why All Companies Need More Women in Tech</h4>
+        <p>Gender representation in tech remains concerning, but the business case for change has never been stronger.</p>
+        <div class="blog-card-footer">
+          <div class="blog-card-meta"><div class="author-avatar">NG</div><span>Noa Gal</span></div>
+          <span class="blog-card-date">Mar 8, 2026</span>
+        </div>
+      </div>
+    </div>
+    </a>
+
+    <a href="https://www.viaccess-orca.com/blog/why-the-user-experience-needs-to-be-more-than-just-an-attractive-interface" style="text-decoration:none;color:inherit;">
+    <div class="blog-card">
+      <div class="blog-card-img">
+        <img src="https://www.viaccess-orca.com/hs-fs/hubfs/content%20discovery%202026.jpg?width=800&height=400" alt="User Experience">
+        <div class="blog-card-img-tag">Data & Engagement</div>
+      </div>
+      <div class="blog-card-body">
+        <h4>Why the User Experience Needs to be More Than Just an Attractive Interface</h4>
+        <p>Content discovery is the defining success measure as streaming volumes surge.</p>
+        <div class="blog-card-footer">
+          <div class="blog-card-meta"><div class="author-avatar">HT</div><span>Hadar Tel Mizrahi</span></div>
+          <span class="blog-card-date">Mar 5, 2026</span>
+        </div>
+      </div>
+    </div>
+    </a>
+
+    <a href="https://www.viaccess-orca.com/blog/sports-streaming-boom-continues-with-2026-winter-olympics" style="text-decoration:none;color:inherit;">
+    <div class="blog-card">
+      <div class="blog-card-img">
+        <img src="https://www.viaccess-orca.com/hs-fs/hubfs/olympic%20streaming%20v2.jpg?width=800&height=400" alt="Sports Streaming">
+        <div class="blog-card-img-tag">Trends & Innovation</div>
+      </div>
+      <div class="blog-card-body">
+        <h4>Sports Streaming Boom Continues with 2026 Winter Olympics</h4>
+        <p>The 2026 Winter Olympics is set to break streaming records. How are broadcasters preparing for the surge in demand?</p>
+        <div class="blog-card-footer">
+          <div class="blog-card-meta"><div class="author-avatar">NG</div><span>Noa Gal</span></div>
+          <span class="blog-card-date">Feb 25, 2026</span>
+        </div>
+      </div>
+    </div>
+    </a>
+
+    <a href="https://www.viaccess-orca.com/blog/behind-the-scenes-of-broadcasting-the-2026-winter-olympics" style="text-decoration:none;color:inherit;">
+    <div class="blog-card">
+      <div class="blog-card-img">
+        <img src="https://www.viaccess-orca.com/hs-fs/hubfs/olympic%20broadcasting%20v2.jpg?width=800&height=400" alt="Broadcasting Olympics">
+        <div class="blog-card-img-tag">Evolution of Video</div>
+      </div>
+      <div class="blog-card-body">
+        <h4>Behind the Scenes of Broadcasting the 2026 Winter Olympics</h4>
+        <p>An inside look at the infrastructure and technology powering the most streamed sporting event in history.</p>
+        <div class="blog-card-footer">
+          <div class="blog-card-meta"><div class="author-avatar">NG</div><span>Noa Gal</span></div>
+          <span class="blog-card-date">Feb 16, 2026</span>
+        </div>
+      </div>
+    </div>
+    </a>
+
+    <a href="https://www.viaccess-orca.com/blog/netflix-ad-revenue-increases-creator-video-growth" style="text-decoration:none;color:inherit;">
+    <div class="blog-card">
+      <div class="blog-card-img">
+        <img src="https://www.viaccess-orca.com/hs-fs/hubfs/tv%20ads%20eyes.jpg?width=800&height=400" alt="Netflix Ad Revenue">
+        <div class="blog-card-img-tag">Trends & Innovation</div>
+      </div>
+      <div class="blog-card-body">
+        <h4>Netflix Ad Revenue Accelerates as Traditional TV Loses Ground to Creator Video</h4>
+        <p>Advertising on streaming platforms is growing faster than expected, while linear TV continues its structural decline.</p>
+        <div class="blog-card-footer">
+          <div class="blog-card-meta"><div class="author-avatar">AS</div><span>Andy Stout</span></div>
+          <span class="blog-card-date">Feb 5, 2026</span>
+        </div>
+      </div>
+    </div>
+    </a>
+
+    <a href="https://www.viaccess-orca.com/blog/sports-streaming-priorities-2026" style="text-decoration:none;color:inherit;">
+    <div class="blog-card">
+      <div class="blog-card-img">
+        <img src="https://www.viaccess-orca.com/hs-fs/hubfs/sports%20streaming%20downhill%20skiiing.jpg?width=800&height=400" alt="Sports Streaming Priorities">
+        <div class="blog-card-img-tag">Trends & Innovation</div>
+      </div>
+      <div class="blog-card-body">
+        <h4>Six Essential Priorities for Sports Streaming Success in 2026</h4>
+        <p>As sports rights costs soar and viewer expectations rise, here are the six priorities every sports broadcaster must address.</p>
+        <div class="blog-card-footer">
+          <div class="blog-card-meta"><div class="author-avatar">EK</div><span>Einat Kahana</span></div>
+          <span class="blog-card-date">Jan 22, 2026</span>
+        </div>
+      </div>
+    </div>
+    </a>
+
+  </div>
+
+  <!-- PAGINATION -->
+  <div class="pagination">
+    <button class="page-btn arrow">←</button>
+    <button class="page-btn active">1</button>
+    <button class="page-btn">2</button>
+    <button class="page-btn">3</button>
+    <button class="page-btn">4</button>
+    <button class="page-btn">5</button>
+    <span class="page-dots">···</span>
+    <button class="page-btn">86</button>
+    <button class="page-btn arrow">→</button>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="logo">Viaccess<span>-Orca</span></div>
+        <p>Empowering content providers with secure, flexible, and innovative solutions for the connected world.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Solutions</h5>
+        <a href="#">Content Security</a>
+        <a href="#">Streaming</a>
+        <a href="#">Monetization</a>
+        <a href="#">Analytics</a>
+      </div>
+      <div class="footer-col">
+        <h5>Company</h5>
+        <a href="#">About Us</a>
+        <a href="#">News & Events</a>
+        <a href="#">Blog</a>
+        <a href="#">Careers</a>
+      </div>
+      <div class="footer-col">
+        <h5>Resources</h5>
+        <a href="#">Documentation</a>
+        <a href="#">Case Studies</a>
+        <a href="#">Contact Us</a>
+        <a href="#">Support</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Viaccess-Orca. All rights reserved.</span>
+      <div class="footer-bottom-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Cookie Policy</a>
+        <a href="#">Terms & Conditions</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
