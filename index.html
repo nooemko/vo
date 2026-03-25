@@ -4,13 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Events — Viaccess-Orca</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
       --dark:    #263338;
-      --red:     #E52527;
+      --purple:     #A3669C;
       --white:   #FFFFFF;
       --light:   #EFEFEF;
       --gray:    #535353;
@@ -19,7 +19,7 @@
     }
 
     body {
-      font-family: 'Inter', system-ui, sans-serif;
+      font-family: 'Rubik', system-ui, sans-serif;
       color: #1A2326;
       background: #fff;
     }
@@ -36,16 +36,16 @@
     .nav-logo {
       font-size: 20px; font-weight: 800; letter-spacing: -0.5px; color: var(--dark);
     }
-    .nav-logo span { color: var(--red); }
+    .nav-logo span { color: var(--purple); }
     .nav-links { display: flex; gap: 32px; align-items: center; }
     .nav-links a {
       text-decoration: none; color: var(--gray); font-size: 14px; font-weight: 500;
       transition: color .2s;
     }
     .nav-links a:hover { color: var(--dark); }
-    .nav-links a.active { color: var(--red); }
+    .nav-links a.active { color: var(--purple); }
     .nav-cta {
-      background: var(--red); color: #fff; padding: 9px 20px;
+      background: var(--purple); color: #fff; padding: 9px 20px;
       border-radius: 4px; font-size: 13px; font-weight: 600;
       text-decoration: none; letter-spacing: .3px;
       transition: opacity .2s;
@@ -61,12 +61,12 @@
     .hero::after {
       content: '';
       position: absolute; bottom: 0; left: 0; right: 0; height: 4px;
-      background: var(--red);
+      background: var(--purple);
     }
     .hero-inner { max-width: 1100px; margin: 0 auto; }
     .hero-label {
       display: inline-block;
-      background: var(--red); color: #fff;
+      background: var(--purple); color: #fff;
       font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
       padding: 4px 12px; border-radius: 2px; margin-bottom: 20px;
     }
@@ -89,7 +89,7 @@
     }
     .section-header p { font-size: 15px; color: var(--midgray); }
     .section-divider {
-      width: 40px; height: 3px; background: var(--red); margin-top: 12px;
+      width: 40px; height: 3px; background: var(--purple); margin-top: 12px;
     }
 
     /* ── UPCOMING EVENTS GRID ── */
@@ -112,23 +112,18 @@
       transform: translateY(-3px);
     }
     .event-card-img {
-      height: 160px; background: var(--dark);
+      height: 160px; background: #f8f8f8;
       display: flex; align-items: center; justify-content: center;
-      padding: 28px;
+      padding: 32px; border-bottom: 1px solid var(--border);
     }
-    .event-card-img img { max-height: 80px; max-width: 180px; object-fit: contain; }
-    .event-card-img .placeholder-logo {
-      font-size: 22px; font-weight: 700; color: rgba(255,255,255,.8); letter-spacing: 1px;
-    }
+    .event-card-img img { max-height: 80px; max-width: 200px; object-fit: contain; }
     .event-card-body { padding: 20px 22px 24px; flex: 1; display: flex; flex-direction: column; }
     .event-badge {
-      display: inline-flex; align-items: center; gap: 5px;
-      font-size: 11px; font-weight: 600; color: var(--red); text-transform: uppercase;
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 11px; font-weight: 600; color: var(--purple); text-transform: uppercase;
       letter-spacing: .8px; margin-bottom: 10px;
     }
-    .event-badge::before {
-      content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--red);
-    }
+    .event-badge svg { flex-shrink: 0; }
     .event-card-body h3 {
       font-size: 17px; font-weight: 700; color: var(--dark);
       margin-bottom: 14px; line-height: 1.3;
@@ -142,7 +137,7 @@
     .event-link {
       margin-top: auto;
       display: inline-flex; align-items: center; gap: 6px;
-      color: var(--red); font-size: 13px; font-weight: 600; text-decoration: none;
+      color: var(--purple); font-size: 13px; font-weight: 600; text-decoration: none;
       transition: gap .2s;
     }
     .event-link:hover { gap: 10px; }
@@ -151,11 +146,9 @@
 
     /* ── FEATURED CARD ── */
     .event-card.featured {
-      grid-column: span 1;
-      border-color: var(--red);
+      border-color: var(--purple);
       border-width: 2px;
     }
-    .event-card.featured .event-card-img { background: var(--red); }
 
     /* ── PAST EVENTS ── */
     .section-past { background: var(--light); }
@@ -187,7 +180,7 @@
       display: inline-block; margin-top: 10px;
       font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .6px;
       padding: 2px 8px; border-radius: 2px;
-      background: rgba(229,37,39,.1); color: var(--red);
+      background: rgba(163,102,156,.12); color: var(--purple);
     }
 
     /* ── FOOTER ── */
@@ -203,7 +196,7 @@
       margin-bottom: 32px;
     }
     .footer-brand .logo { font-size: 18px; font-weight: 800; color: #fff; margin-bottom: 12px; }
-    .footer-brand .logo span { color: var(--red); }
+    .footer-brand .logo span { color: var(--purple); }
     .footer-brand p { font-size: 13px; line-height: 1.7; max-width: 240px; }
     .footer-col h5 {
       font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
@@ -278,159 +271,129 @@
   <div class="section-inner">
     <div class="section-header">
       <h2>Upcoming Events</h2>
-      <p>Find us at these upcoming industry events in 2025</p>
+      <p>Find us at these upcoming industry events in 2026</p>
       <div class="section-divider"></div>
     </div>
 
     <div class="events-grid">
 
       <!-- Card 1 -->
-      <div class="event-card featured">
-        <div class="event-card-img">
-          <div class="placeholder-logo">SPORTEL ASIA</div>
-        </div>
+      <div class="event-card">
+        <div class="event-card-img"><img src="https://www.viaccess-orca.com/hubfs/logo-singapour-2025.png" alt="Sportel Asia"></div>
         <div class="event-card-body">
-          <div class="event-badge">Physical</div>
+          <div class="event-badge"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/><path d="m21 3 1 11h-1"/><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/><path d="M3 4h8"/></svg>Physical</div>
           <h3>Sportel Asia</h3>
           <div class="event-meta">
             <div class="event-meta-item">
               <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-              Mar 24–25, 2025
+              Mar 24–25, 2026
             </div>
             <div class="event-meta-item">
               <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
               Singapore
             </div>
           </div>
-          <a href="#" class="event-link">
-            Meet us in Singapore
-            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-          </a>
+          <a href="#" class="event-link">Meet us in Singapore <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
         </div>
       </div>
 
       <!-- Card 2 -->
       <div class="event-card">
-        <div class="event-card-img">
-          <div class="placeholder-logo">NAB SHOW</div>
-        </div>
+        <div class="event-card-img"><img src="https://www.viaccess-orca.com/hubfs/NABSHOW_primary_logo_blue_black.png" alt="NAB Show"></div>
         <div class="event-card-body">
-          <div class="event-badge">Physical</div>
+          <div class="event-badge"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/><path d="m21 3 1 11h-1"/><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/><path d="M3 4h8"/></svg>Physical</div>
           <h3>NAB Show</h3>
           <div class="event-meta">
             <div class="event-meta-item">
               <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-              Apr 19–22, 2025
+              Apr 19–22, 2026
             </div>
             <div class="event-meta-item">
               <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
               Las Vegas
             </div>
           </div>
-          <a href="#" class="event-link">
-            View Event Details
-            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-          </a>
+          <a href="#" class="event-link">Meet us in Las Vegas <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
         </div>
       </div>
 
       <!-- Card 3 -->
       <div class="event-card">
-        <div class="event-card-img">
-          <div class="placeholder-logo">BROADCASTASIA</div>
-        </div>
+        <div class="event-card-img"><img src="https://www.viaccess-orca.com/hubfs/Broadcast-Asia-Logo-ca05e7e88b5a28bb4e639715cf421918.avif" alt="BroadcastAsia"></div>
         <div class="event-card-body">
-          <div class="event-badge">Physical</div>
+          <div class="event-badge"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/><path d="m21 3 1 11h-1"/><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/><path d="M3 4h8"/></svg>Physical</div>
           <h3>BroadcastAsia</h3>
           <div class="event-meta">
             <div class="event-meta-item">
               <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-              May 20–22, 2025
+              May 20–22, 2026
             </div>
             <div class="event-meta-item">
               <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
               Singapore
             </div>
           </div>
-          <a href="#" class="event-link">
-            View Event Details
-            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-          </a>
+          <a href="#" class="event-link">View Event Details <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
         </div>
       </div>
 
       <!-- Card 4 -->
       <div class="event-card">
-        <div class="event-card-img">
-          <div class="placeholder-logo">CABSAT</div>
-        </div>
+        <div class="event-card-img"><img src="https://www.viaccess-orca.com/hubfs/Cabsat_3.png" alt="Cabsat"></div>
         <div class="event-card-body">
-          <div class="event-badge">Physical</div>
+          <div class="event-badge"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/><path d="m21 3 1 11h-1"/><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/><path d="M3 4h8"/></svg>Physical</div>
           <h3>Cabsat</h3>
           <div class="event-meta">
             <div class="event-meta-item">
               <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-              Jun 2–4, 2025
+              Jun 2–4, 2026
             </div>
             <div class="event-meta-item">
               <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
               Dubai
             </div>
           </div>
-          <a href="#" class="event-link">
-            View Event Details
-            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-          </a>
+          <a href="#" class="event-link">View Event Details <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
         </div>
       </div>
 
       <!-- Card 5 -->
       <div class="event-card">
-        <div class="event-card-img">
-          <div class="placeholder-logo">VIVATECH</div>
-        </div>
+        <div class="event-card-img"><img src="https://www.viaccess-orca.com/hubfs/logo-vivatechnology-1.svg" alt="Vivatech"></div>
         <div class="event-card-body">
-          <div class="event-badge">Physical</div>
+          <div class="event-badge"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/><path d="m21 3 1 11h-1"/><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/><path d="M3 4h8"/></svg>Physical</div>
           <h3>Vivatech</h3>
           <div class="event-meta">
             <div class="event-meta-item">
               <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-              Jun 17–20, 2025
+              Jun 17–20, 2026
             </div>
             <div class="event-meta-item">
               <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
               Paris
             </div>
           </div>
-          <a href="#" class="event-link">
-            View Event Details
-            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-          </a>
+          <a href="#" class="event-link">View Event Details <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
         </div>
       </div>
 
       <!-- Card 6 -->
       <div class="event-card">
-        <div class="event-card-img">
-          <div class="placeholder-logo">IBC 2025</div>
-        </div>
+        <div class="event-card-img"><img src="https://www.viaccess-orca.com/hubfs/ibc-roundel-white-red2025.webp" alt="IBC"></div>
         <div class="event-card-body">
-          <div class="event-badge">Physical</div>
-          <h3>IBC Show</h3>
+          <div class="event-badge"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/><path d="m21 3 1 11h-1"/><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/><path d="M3 4h8"/></svg>Physical</div>
+          <h3>IBC</h3>
           <div class="event-meta">
             <div class="event-meta-item">
               <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-              Sep 11–14, 2025
+              Sep 11–14, 2026
             </div>
             <div class="event-meta-item">
               <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
               Amsterdam
             </div>
           </div>
-          <a href="#" class="event-link">
-            View Event Details
-            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-          </a>
+          <a href="#" class="event-link">View Event Details <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
         </div>
       </div>
 
@@ -448,78 +411,133 @@
     </div>
 
     <div class="past-grid">
+
       <div class="past-card">
-        <div class="past-card-date">Jan 2025</div>
-        <h4>CES 2025</h4>
-        <p>
-          <svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg>
-          Las Vegas
-        </p>
+        <div class="past-card-date">Dec 8–10, 2025</div>
+        <h4>BRIDGE Summit Abu Dhabi</h4>
+        <p><svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg> Abu Dhabi</p>
         <div class="past-card-tag">Physical</div>
       </div>
+
       <div class="past-card">
-        <div class="past-card-date">Feb 2025</div>
-        <h4>Mobile World Congress</h4>
-        <p>
-          <svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg>
-          Barcelona
-        </p>
+        <div class="past-card-date">Dec 9–10, 2025</div>
+        <h4>The Future of TV Advertising Global 2025</h4>
+        <p><svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg> London</p>
         <div class="past-card-tag">Physical</div>
       </div>
+
       <div class="past-card">
-        <div class="past-card-date">Mar 2025</div>
-        <h4>SXSW 2025</h4>
-        <p>
-          <svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg>
-          Austin
-        </p>
+        <div class="past-card-date">Nov 18–20, 2025</div>
+        <h4>2025 APAC TV Summit</h4>
+        <p><svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg> Bangkok</p>
         <div class="past-card-tag">Physical</div>
       </div>
+
       <div class="past-card">
-        <div class="past-card-date">Oct 2024</div>
-        <h4>MIPCOM 2024</h4>
-        <p>
-          <svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg>
-          Cannes
-        </p>
+        <div class="past-card-date">Nov 18–19, 2025</div>
+        <h4>SportsPro Media Summit</h4>
+        <p><svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg> Madrid</p>
         <div class="past-card-tag">Physical</div>
       </div>
+
       <div class="past-card">
-        <div class="past-card-date">Sep 2024</div>
-        <h4>IBC 2024</h4>
-        <p>
-          <svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg>
-          Amsterdam
-        </p>
+        <div class="past-card-date">Nov 11, 2025</div>
+        <h4>BroadcastPro ME Summit & Awards</h4>
+        <p><svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg> Dubai</p>
         <div class="past-card-tag">Physical</div>
       </div>
+
       <div class="past-card">
-        <div class="past-card-date">Jun 2024</div>
-        <h4>Vivatech 2024</h4>
-        <p>
-          <svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg>
-          Paris
-        </p>
+        <div class="past-card-date">Nov 5–6, 2025</div>
+        <h4>SATIS 2025</h4>
+        <p><svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg> Paris</p>
         <div class="past-card-tag">Physical</div>
       </div>
+
       <div class="past-card">
-        <div class="past-card-date">Apr 2024</div>
-        <h4>NAB Show 2024</h4>
-        <p>
-          <svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg>
-          Las Vegas
-        </p>
+        <div class="past-card-date">Oct 28–29, 2025</div>
+        <h4>NXT Media Days EU 2025</h4>
+        <p><svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg> Valencia</p>
         <div class="past-card-tag">Physical</div>
       </div>
+
       <div class="past-card">
-        <div class="past-card-date">Mar 2024</div>
-        <h4>Sportel Asia 2024</h4>
-        <p>
-          <svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg>
-          Singapore
-        </p>
+        <div class="past-card-date">Oct 13–17, 2025</div>
+        <h4>Gitex Global 2025</h4>
+        <p><svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg> Dubai</p>
         <div class="past-card-tag">Physical</div>
       </div>
+
+      <div class="past-card">
+        <div class="past-card-date">Oct 14–16, 2025</div>
+        <h4>Network X 2025</h4>
+        <p><svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg> Paris</p>
+        <div class="past-card-tag">Physical</div>
+      </div>
+
+      <div class="past-card">
+        <div class="past-card-date">Sep 12–15, 2025</div>
+        <h4>IBC 2025</h4>
+        <p><svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg> Amsterdam</p>
+        <div class="past-card-tag">Physical</div>
+      </div>
+
+      <div class="past-card">
+        <div class="past-card-date">Jun 11–14, 2025</div>
+        <h4>VIVA Technology 2025</h4>
+        <p><svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg> Paris</p>
+        <div class="past-card-tag">Physical</div>
+      </div>
+
+      <div class="past-card">
+        <div class="past-card-date">May 27–29, 2025</div>
+        <h4>Broadcast Asia 2025</h4>
+        <p><svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg> Singapore</p>
+        <div class="past-card-tag">Physical</div>
+      </div>
+
+      <div class="past-card">
+        <div class="past-card-date">May 13–15, 2025</div>
+        <h4>CABSAT 2025</h4>
+        <p><svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg> Dubai</p>
+        <div class="past-card-tag">Physical</div>
+      </div>
+
+      <div class="past-card">
+        <div class="past-card-date">Apr 6–9, 2025</div>
+        <h4>NAB 2025</h4>
+        <p><svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg> Las Vegas</p>
+        <div class="past-card-tag">Physical</div>
+      </div>
+
+      <div class="past-card">
+        <div class="past-card-date">Mar 11–12, 2025</div>
+        <h4>Connected TV World Summit 2025</h4>
+        <p><svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg> London</p>
+        <div class="past-card-tag">Physical</div>
+      </div>
+
+      <div class="past-card">
+        <div class="past-card-date">Mar 3–6, 2025</div>
+        <h4>MWC 2025</h4>
+        <p><svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg> Barcelona</p>
+        <div class="past-card-tag">Physical</div>
+      </div>
+
+      <div class="past-card">
+        <div class="past-card-date">Mar 10–13, 2025</div>
+        <h4>AndinaLink 2025</h4>
+        <p><svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg> Cartagena</p>
+        <div class="past-card-tag">Physical</div>
+      </div>
+
+      <div class="past-card">
+        <div class="past-card-date">Jan 20–23, 2025</div>
+        <h4>Content Americas 2025</h4>
+        <p><svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg> Miami</p>
+        <div class="past-card-tag">Physical</div>
+      </div>
+
     </div>
   </div>
 </section>
