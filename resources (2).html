@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resource Center — Viaccess-Orca</title>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --dark:       #263338;
+      --darker:     #1a2428;
+      --card-bg:    #2e3e44;
+      --purple:     #A3669C;
+      --purple-dim: rgba(163,102,156,.15);
+      --white:      #FFFFFF;
+      --text:       rgba(255,255,255,.88);
+      --text-dim:   rgba(255,255,255,.55);
+      --text-faint: rgba(255,255,255,.35);
+      --border:     rgba(255,255,255,.1);
+    }
+
+    body { font-family: 'Rubik', system-ui, sans-serif; background: var(--dark); color: var(--text); }
+
+    /* ── TOP BAR ── */
+    .top-bar {
+      background: #fff; border-bottom: 1px solid #e8e8e8;
+      padding: 0 40px; height: 36px;
+      display: flex; align-items: center; justify-content: flex-end; gap: 20px;
+    }
+    .top-bar a { font-size: 12px; color: #666; text-decoration: none; transition: color .2s; }
+    .top-bar a:hover { color: #000; }
+    .top-bar .top-contact {
+      background: #9A488D; color: #fff; padding: 4px 14px;
+      border-radius: 3px; font-size: 12px; font-weight: 600;
+    }
+    .top-bar .top-contact:hover { opacity: .85; color: #fff; }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: #fff; border-bottom: 1px solid #e8e8e8;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 40px; height: 68px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.06);
+    }
+    .nav-logo img { height: 38px; display: block; }
+    .nav-main { display: flex; align-items: center; gap: 0; }
+    .nav-item { position: relative; }
+    .nav-item > a {
+      display: flex; align-items: center; gap: 5px;
+      text-decoration: none; color: #000; font-size: 13.5px; font-weight: 500;
+      padding: 0 16px; height: 68px; transition: color .2s;
+      white-space: nowrap;
+    }
+    .nav-item > a:hover, .nav-item:hover > a { color: #9A488D; }
+    .nav-item > a.active { color: #9A488D; }
+    .nav-item > a svg { transition: transform .2s; color: #999; }
+    .nav-item:hover > a svg { transform: rotate(180deg); }
+
+    /* dropdown */
+    .nav-dropdown {
+      display: none; position: absolute; top: 100%; left: 0;
+      background: #fff; border: 1px solid #e8e8e8; border-top: 2px solid #9A488D;
+      border-radius: 0 0 8px 8px; min-width: 220px;
+      box-shadow: 0 8px 24px rgba(0,0,0,.1); z-index: 200;
+      padding: 8px 0;
+    }
+    .nav-item:hover .nav-dropdown { display: block; }
+    .nav-dropdown a {
+      display: block; padding: 9px 20px;
+      font-size: 13px; color: #333; text-decoration: none;
+      font-weight: 400; transition: color .2s, background .2s;
+    }
+    .nav-dropdown a:hover { color: #9A488D; background: #faf7fa; }
+    .nav-dropdown .dropdown-section {
+      font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+      color: #aaa; padding: 10px 20px 4px; pointer-events: none;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      background: var(--darker); padding: 72px 40px 64px;
+      border-bottom: 1px solid var(--border);
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: ''; position: absolute; top: -80px; right: -60px;
+      width: 500px; height: 500px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(163,102,156,.1) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .hero::after {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+      background: var(--purple);
+    }
+    .hero-inner { max-width: 1100px; margin: 0 auto; }
+    .hero h1 { font-size: 60px; font-weight: 800; color: var(--white); line-height: 1.08; letter-spacing: -1.5px; margin-bottom: 16px; }
+    .hero p { font-size: 20px; color: var(--text-dim); max-width: 520px; line-height: 1.65; font-weight: 300; }
+
+    /* ── FILTER BAR ── */
+    .filter-section {
+      background: var(--darker); border-bottom: 1px solid var(--border);
+      padding: 16px 40px; position: sticky; top: 68px; z-index: 90;
+    }
+    .filter-section-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; gap: 16px; }
+    .filter-label { font-size: 14px; font-weight: 500; color: var(--text-faint); white-space: nowrap; }
+    .filter-select {
+      padding: 8px 36px 8px 14px; border-radius: 6px;
+      border: 1px solid var(--border); background: var(--card-bg);
+      color: var(--text); font-family: 'Rubik', sans-serif; font-size: 16px;
+      cursor: pointer; appearance: none; outline: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.4)' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 12px center;
+      transition: border-color .2s;
+    }
+    .filter-select:hover, .filter-select:focus { border-color: var(--purple); }
+    .filter-divider { width: 1px; height: 20px; background: var(--border); }
+
+    /* ── MAIN CONTENT ── */
+    .main { padding: 48px 40px 80px; }
+    .main-inner { max-width: 1100px; margin: 0 auto; }
+
+    .resource-type {
+      display: inline-block; font-size: 12px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .8px; color: var(--purple); background: var(--purple-dim);
+      border: 1px solid rgba(163,102,156,.25); padding: 3px 10px; border-radius: 20px;
+      width: fit-content;
+    }
+    .featured-body h2 { font-size: 30px; font-weight: 700; color: var(--white); line-height: 1.3; }
+    .featured-body p { font-size: 16px; color: var(--text-dim); line-height: 1.7; font-weight: 300; }
+    /* ── GRID ── */
+    .section-title { font-size: 16px; font-weight: 700; color: var(--text-faint); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 20px; }
+    .resources-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 48px; }
+    .resource-card {
+      background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px;
+      overflow: hidden; text-decoration: none; color: inherit;
+      display: flex; flex-direction: column;
+      transition: transform .25s, box-shadow .25s, border-color .25s;
+    }
+    .resource-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 36px rgba(0,0,0,.3);
+      border-color: rgba(163,102,156,.4);
+    }
+    .resource-card-img { height: 148px; overflow: hidden; }
+    .resource-card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .35s; }
+    .resource-card:hover .resource-card-img img { transform: scale(1.04); }
+    .resource-card-body { padding: 20px; flex: 1; display: flex; flex-direction: column; gap: 8px; }
+    .resource-card-body h3 { font-size: 18px; font-weight: 600; color: var(--white); line-height: 1.35; flex: 1; }
+    .resource-card-body p { font-size: 16px; color: var(--text-dim); line-height: 1.6; font-weight: 300; }
+    .resource-card-footer { padding: 0 20px 18px; display: flex; justify-content: space-between; align-items: center; }
+    .resource-date { font-size: 14px; color: var(--text-faint); }
+    .read-more { font-size: 14px; font-weight: 600; color: var(--purple); display: flex; align-items: center; gap: 4px; }
+
+    /* ── DIVIDER ── */
+    .divider { border: none; border-top: 1px solid var(--border); margin: 8px 0 40px; }
+
+    /* ── FOOTER ── */
+    footer { background: #efefef; border-top: 1px solid #ddd; }
+    .footer-top { padding: 48px 40px 40px; border-bottom: 1px solid #ddd; }
+    .footer-top-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; }
+    .footer-col-title {
+      font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+      color: #111; margin-bottom: 16px;
+    }
+    .footer-col-title a { color: #111; text-decoration: none; }
+    .footer-top a { display: block; font-size: 13px; color: #555; text-decoration: none; margin-bottom: 9px; transition: color .2s; }
+    .footer-top a:hover { color: #9A488D; }
+    .footer-mid { padding: 24px 40px; border-bottom: 1px solid #ddd; }
+    .footer-mid-inner { max-width: 1100px; margin: 0 auto; width: 100%; display: flex; align-items: center; justify-content: space-between; }
+    .footer-logo img { height: 44px; }
+    .footer-social { display: flex; align-items: center; gap: 16px; }
+    .footer-social a { color: #999; text-decoration: none; transition: color .2s; display: flex; align-items: center; }
+    .footer-social a:hover { color: #9A488D; }
+    .footer-social svg { width: 18px; height: 18px; }
+    .footer-demo { background: transparent; color: #9A488D; border: 1.5px solid #9A488D; padding: 7px 18px; border-radius: 4px; font-size: 13px; font-weight: 600; text-decoration: none; transition: all .2s; }
+    .footer-demo:hover { background: #9A488D; color: #fff !important; }
+    .footer-bottom { padding: 18px 40px; }
+    .footer-bottom-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; font-size: 12px; color: #888; }
+    .footer-bottom-links { display: flex; gap: 20px; }
+    .footer-bottom-links a { color: #888; text-decoration: none; transition: color .2s; }
+    .footer-bottom-links a:hover { color: #555; }
+  </style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="top-bar">
+  <a href="/es">ES</a>
+  <a href="https://viaccess-orca.my.salesforce.com/">Login</a>
+  <a href="https://www.viaccess-orca.com/contact" class="top-contact">Contact Us</a>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <a href="https://www.viaccess-orca.com">
+      <img src="https://www.viaccess-orca.com/hubfs/VO%20LOGO-1.svg" alt="Viaccess-Orca">
+    </a>
+  </div>
+  <div class="nav-main">
+
+    <div class="nav-item">
+      <a href="#">TV & Video Solutions <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></a>
+      <div class="nav-dropdown">
+        <div class="dropdown-section">Connect & Deliver</div>
+        <a href="https://www.viaccess-orca.com/tv-solutions">Connect & Deliver</a>
+        <a href="https://www.viaccess-orca.com/ott-tv">IPTV & OTT Platforms</a>
+        <a href="https://www.viaccess-orca.com/secure-player">Secure Video Player</a>
+        <a href="https://www.viaccess-orca.com/tv-apps">TV APPS</a>
+        <div class="dropdown-section">Protect & Secure</div>
+        <a href="https://www.viaccess-orca.com/content-protection">Protect & Secure</a>
+        <a href="https://www.viaccess-orca.com/tv-piracy">Anti-Piracy Services</a>
+        <a href="https://www.viaccess-orca.com/tv-piracy/dynamic-watermarking">Dynamic Watermarking</a>
+        <a href="https://www.viaccess-orca.com/conditional-access-system">CAS Solutions</a>
+        <a href="https://www.viaccess-orca.com/drm-solutions">DRM Solutions</a>
+        <div class="dropdown-section">Engage & Monetize</div>
+        <a href="https://www.viaccess-orca.com/targeted-advertising">TV Advertising Solutions</a>
+        <a href="https://www.viaccess-orca.com/tv-analytics">Data Intelligence & Personalization</a>
+        <a href="https://www.viaccess-orca.com/sports-ott-video-services">Sports Streaming</a>
+      </div>
+    </div>
+
+    <div class="nav-item">
+      <a href="#">About Us <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></a>
+      <div class="nav-dropdown">
+        <a href="https://www.viaccess-orca.com/who-we-are/vo-at-a-glance">Why VO</a>
+        <a href="https://www.viaccess-orca.com/customers">Customers</a>
+        <a href="https://www.viaccess-orca.com/who-we-are/partners">Partners</a>
+        <a href="https://www.viaccess-orca.com/testimonials">Success Stories</a>
+        <a href="https://www.viaccess-orca.com/careers">Careers</a>
+      </div>
+    </div>
+
+    <div class="nav-item">
+      <a href="#" class="active">News & Events <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></a>
+      <div class="nav-dropdown">
+        <a href="https://www.viaccess-orca.com/what-s-new/vo-in-the-news">In the News</a>
+        <a href="https://www.viaccess-orca.com/what-s-new/events">Events</a>
+        <a href="https://www.viaccess-orca.com/what-s-new/pr">Press Releases</a>
+      </div>
+    </div>
+
+    <div class="nav-item">
+      <a href="https://www.viaccess-orca.com/what-s-new/resource-center">Resources</a>
+    </div>
+
+    <div class="nav-item">
+      <a href="https://www.viaccess-orca.com/blog/">Blog</a>
+    </div>
+
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <h1>Resource Center</h1>
+    <p>Whitepapers, case studies, videos, and more — everything you need to stay ahead in the TV & video industry.</p>
+  </div>
+</section>
+
+<!-- FILTERS -->
+<div class="filter-section">
+  <div class="filter-section-inner">
+    <span class="filter-label">Filter by:</span>
+    <select class="filter-select">
+      <option>All Solutions</option>
+      <option>Anti-Piracy</option>
+      <option>Cloud TV</option>
+      <option>Content Discovery</option>
+      <option>Content Monetization</option>
+      <option>DRM Solutions</option>
+      <option>OTT</option>
+      <option>Dynamic Watermarking</option>
+      <option>TV Advertising</option>
+      <option>CAS Solutions</option>
+      <option>Secure Video Player</option>
+    </select>
+    <div class="filter-divider"></div>
+    <select class="filter-select">
+      <option>All Resource Types</option>
+      <option>Whitepapers</option>
+      <option>Case Studies</option>
+      <option>Data Sheets</option>
+      <option>Brochures</option>
+      <option>eBooks</option>
+      <option>Videos</option>
+      <option>Webinars</option>
+      <option>Newsletters</option>
+      <option>Infographics</option>
+      <option>Reports</option>
+    </select>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="main-inner">
+
+    <!-- RECENT RESOURCES -->
+    <div class="section-title">Recent Resources</div>
+    <div class="resources-grid">
+
+      <a href="#" class="resource-card">
+        <div class="resource-card-img">
+          <img src="https://www.viaccess-orca.com/hubfs/olympic%20streaming%20v2%20no%20logo.jpg" alt="Sports Streaming 2026 Winter Olympics">
+        </div>
+        <div class="resource-card-body">
+          <span class="resource-type">Newsletter</span>
+          <h3>Sports Streaming Boom Continues with 2026 Winter Olympics</h3>
+          <p>How the 2026 Winter Olympics are reshaping sports streaming and OTT-first broadcasting strategies.</p>
+        </div>
+        <div class="resource-card-footer">
+          <span class="resource-date">Feb 2026</span>
+          <span class="read-more">Read More <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </div>
+      </a>
+
+      <a href="#" class="resource-card">
+        <div class="resource-card-img">
+          <img src="https://www.viaccess-orca.com/hubfs/nltr%20sports%20streaming%20skier.jpg" alt="6 Priorities for Sports Streaming">
+        </div>
+        <div class="resource-card-body">
+          <span class="resource-type">Newsletter</span>
+          <h3>6 Priorities for Sports Streaming Success in 2026</h3>
+          <p>Key strategic priorities for operators looking to capture the growing sports streaming audience in 2026.</p>
+        </div>
+        <div class="resource-card-footer">
+          <span class="resource-date">Jan 2026</span>
+          <span class="read-more">Read More <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </div>
+      </a>
+
+      <a href="#" class="resource-card">
+        <div class="resource-card-img">
+          <img src="https://www.viaccess-orca.com/hubfs/Three%20Factors%20Driving%20Sports%20Piracy%20%E2%80%94%20and%20How%20the%20Industry%20Can%20Respond.jpg" alt="Sports Piracy">
+        </div>
+        <div class="resource-card-body">
+          <span class="resource-type">Whitepaper</span>
+          <h3>Three Factors Driving Sports Piracy — and How the Industry Can Respond</h3>
+          <p>An in-depth analysis of the key drivers behind live sports piracy and actionable strategies to protect rights.</p>
+        </div>
+        <div class="resource-card-footer">
+          <span class="resource-date">2025</span>
+          <span class="read-more">Read More <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </div>
+      </a>
+
+      <a href="#" class="resource-card">
+        <div class="resource-card-img">
+          <img src="https://www.viaccess-orca.com/hubfs/TV%20Apps%20thumbnail_2.png" alt="TVApps Product Brochure">
+        </div>
+        <div class="resource-card-body">
+          <span class="resource-type">Brochure</span>
+          <h3>VO TVApps — Product Brochure</h3>
+          <p>White-label multiscreen TV apps designed for operators — explore features, architecture, and deployment models.</p>
+        </div>
+        <div class="resource-card-footer">
+          <span class="resource-date">2025</span>
+          <span class="read-more">Download <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </div>
+      </a>
+
+      <a href="#" class="resource-card">
+        <div class="resource-card-img">
+          <img src="https://www.viaccess-orca.com/hubfs/CDN%20Leeching%20resources%20center%20banner_256x175%20copy.jpg" alt="CDN Leeching">
+        </div>
+        <div class="resource-card-body">
+          <span class="resource-type">Whitepaper</span>
+          <h3>CDN Leeching: Understanding the Evolving Face of Piracy</h3>
+          <p>How CDN leeching works, its financial impact on operators, and how to detect and mitigate unauthorized redistribution.</p>
+        </div>
+        <div class="resource-card-footer">
+          <span class="resource-date">2025</span>
+          <span class="read-more">Download <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </div>
+      </a>
+
+      <a href="#" class="resource-card">
+        <div class="resource-card-img">
+          <img src="https://www.viaccess-orca.com/hubfs/Shutterstock_2560062969.jpg" alt="Targeted TV Advertising">
+        </div>
+        <div class="resource-card-body">
+          <span class="resource-type">eBook</span>
+          <h3>Your Personalized Guide to Targeted TV Advertising</h3>
+          <p>A comprehensive guide to implementing targeted advertising strategies across linear and streaming platforms.</p>
+        </div>
+        <div class="resource-card-footer">
+          <span class="resource-date">2025</span>
+          <span class="read-more">Download <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </div>
+      </a>
+
+      <a href="#" class="resource-card">
+        <div class="resource-card-img">
+          <img src="https://www.viaccess-orca.com/hubfs/public%20service%20broadcasting%20nologo.jpg" alt="Public Service Broadcasting">
+        </div>
+        <div class="resource-card-body">
+          <span class="resource-type">Report</span>
+          <h3>Public Service Broadcasting in the Streaming Era</h3>
+          <p>How public broadcasters are adapting their content and distribution strategies to compete in the on-demand landscape.</p>
+        </div>
+        <div class="resource-card-footer">
+          <span class="resource-date">2025</span>
+          <span class="read-more">Read More <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </div>
+      </a>
+
+    </div>
+
+    <hr class="divider">
+
+    <!-- VIDEOS & WEBINARS -->
+    <div class="section-title">Videos & Webinars</div>
+    <div class="resources-grid">
+
+      <a href="#" class="resource-card">
+        <div class="resource-card-img">
+          <img src="https://www.viaccess-orca.com/hubfs/Screenshot%202025-09-18%20at%2012.22.27.png" alt="IBC2025 TVApps">
+        </div>
+        <div class="resource-card-body">
+          <span class="resource-type">Video</span>
+          <h3>IBC 2025: Exploring TVApps & DaaS</h3>
+          <p>Expert interview covering the latest developments in TV application platforms and Device-as-a-Service models.</p>
+        </div>
+        <div class="resource-card-footer">
+          <span class="resource-date">IBC 2025</span>
+          <span class="read-more">Watch Now <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </div>
+      </a>
+
+      <a href="#" class="resource-card">
+        <div class="resource-card-img">
+          <img src="https://www.viaccess-orca.com/hubfs/Screenshot%202025-09-18%20at%2012.18.53.png" alt="IBC2025 Personalisation">
+        </div>
+        <div class="resource-card-body">
+          <span class="resource-type">Video</span>
+          <h3>IBC 2025: Exploring Personalisation & Targeted Ads</h3>
+          <p>How AI-driven personalization and targeted advertising are converging to create new revenue streams for operators.</p>
+        </div>
+        <div class="resource-card-footer">
+          <span class="resource-date">IBC 2025</span>
+          <span class="read-more">Watch Now <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </div>
+      </a>
+
+      <a href="#" class="resource-card">
+        <div class="resource-card-img">
+          <img src="https://www.viaccess-orca.com/hubfs/NAB%20show%20live%202024%20with%20Atika%20Boulgaz.jpg" alt="NAB 2024">
+        </div>
+        <div class="resource-card-body">
+          <span class="resource-type">Video</span>
+          <h3>NAB Show 2024: Live from the Floor</h3>
+          <p>A live walkthrough of VO's latest innovations in content security, OTT platforms, and targeted advertising at NAB 2024.</p>
+        </div>
+        <div class="resource-card-footer">
+          <span class="resource-date">NAB 2024</span>
+          <span class="read-more">Watch Now <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </div>
+      </a>
+
+    </div>
+
+    <hr class="divider">
+
+    <!-- CASE STUDIES -->
+    <div class="section-title">Case Studies</div>
+    <div class="resources-grid">
+
+      <a href="#" class="resource-card">
+        <div class="resource-card-img">
+          <img src="https://www.viaccess-orca.com/hubfs/Shutterstock_2255695571%20(1).jpg" alt="Orange Spain">
+        </div>
+        <div class="resource-card-body">
+          <span class="resource-type">Case Study</span>
+          <h3>Orange Spain: Scaling OTT with Cloud TV Platform</h3>
+          <p>How Orange Spain leveraged VO's cloud-native TV platform to scale their OTT offering and improve subscriber experience.</p>
+        </div>
+        <div class="resource-card-footer">
+          <span class="resource-date">2025</span>
+          <span class="read-more">Read More <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </div>
+      </a>
+
+      <a href="#" class="resource-card">
+        <div class="resource-card-img">
+          <img src="https://www.viaccess-orca.com/hubfs/Shutterstock_2194594519NLTR.jpg" alt="UNE Colombia">
+        </div>
+        <div class="resource-card-body">
+          <span class="resource-type">Case Study</span>
+          <h3>UNE Colombia: Anti-Piracy at Scale</h3>
+          <p>A deep dive into UNE Colombia's anti-piracy strategy and how VO's monitoring services protected their premium content.</p>
+        </div>
+        <div class="resource-card-footer">
+          <span class="resource-date">2024</span>
+          <span class="read-more">Read More <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </div>
+      </a>
+
+      <a href="#" class="resource-card">
+        <div class="resource-card-img">
+          <img src="https://www.viaccess-orca.com/hubfs/Cellcoms%203-Second%20latency%20powered%20by%20VO%20%26%20Broadpeak.jpg" alt="Cellcom Low Latency">
+        </div>
+        <div class="resource-card-body">
+          <span class="resource-type">Case Study</span>
+          <h3>Cellcom: 3-Second Latency Live Streaming</h3>
+          <p>How Cellcom achieved ultra-low latency live streaming powered by VO and Broadpeak, transforming live sports delivery.</p>
+        </div>
+        <div class="resource-card-footer">
+          <span class="resource-date">2024</span>
+          <span class="read-more">Read More <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </div>
+      </a>
+
+    </div>
+
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-top-inner">
+      <div>
+        <div class="footer-col-title"><a href="https://www.viaccess-orca.com">Viaccess-Orca</a></div>
+        <a href="https://www.viaccess-orca.com/ott-tv">IPTV & OTT Platforms</a>
+        <a href="https://www.viaccess-orca.com/targeted-advertising">TV Advertising Solutions</a>
+        <a href="https://www.viaccess-orca.com/secure-player">Secure Player</a>
+        <a href="https://www.viaccess-orca.com/tv-apps">TV APPS</a>
+      </div>
+      <div>
+        <div class="footer-col-title">Protect & Secure</div>
+        <a href="https://www.viaccess-orca.com/tv-piracy/dynamic-watermarking">Dynamic Watermarking</a>
+        <a href="https://www.viaccess-orca.com/conditional-access-system">CAS Solutions</a>
+        <a href="https://www.viaccess-orca.com/tv-piracy">Anti-Piracy Solutions</a>
+        <a href="https://www.viaccess-orca.com/sports-ott-video-services">Live Sports Solutions</a>
+      </div>
+      <div>
+        <div class="footer-col-title">News & Resources</div>
+        <a href="https://www.viaccess-orca.com/what-s-new/resource-center">Resources</a>
+        <a href="https://www.viaccess-orca.com/blog">Blog</a>
+        <a href="https://www.viaccess-orca.com/what-s-new/events">Events</a>
+        <a href="https://www.viaccess-orca.com/what-s-new/vo-in-the-news">News</a>
+      </div>
+      <div>
+        <div class="footer-col-title">Company</div>
+        <a href="https://www.viaccess-orca.com/who-we-are/vo-at-a-glance">Why VO</a>
+        <a href="https://www.viaccess-orca.com/customers">Customers</a>
+        <a href="https://www.viaccess-orca.com/who-we-are/partners">Partners</a>
+        <a href="https://www.viaccess-orca.com/careers">Careers</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-mid">
+    <div class="footer-mid-inner">
+      <img src="https://www.viaccess-orca.com/hubfs/Always%20EVOLVE_Grey-sm.svg" alt="Always Evolve" style="height:32px; opacity:.7;">
+      <div class="footer-social">
+        <a href="https://www.facebook.com/pages/Orca-Interactive/173831905982882" title="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
+        <a href="https://twitter.com/ViaccessOrca" title="X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+        <a href="https://www.youtube.com/ViaccessOrca" title="YouTube"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 00-1.95 1.96A29 29 0 001 12a29 29 0 00.46 5.58a2.78 2.78 0 001.95 1.95C5.12 20 12 20 12 20s6.88 0 8.59-.47a2.78 2.78 0 001.95-1.95A29 29 0 0023 12a29 29 0 00-.46-5.58zM9.75 15.02V8.98L15.5 12z"/></svg></a>
+        <a href="https://www.linkedin.com/company/viaccess-orca" title="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg></a>
+        <a href="https://www.viaccess-orca.com/request-a-demo" class="footer-demo">Request a demo</a>
+      </div>
+      <div class="footer-logo"><img src="https://www.viaccess-orca.com/hubfs/VO-LOGO-footer.png" alt="Viaccess-Orca"></div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <div class="footer-bottom-inner">
+      <span>Copyright © 2026 Viaccess, trading as Viaccess-Orca. All Rights Reserved.</span>
+      <div class="footer-bottom-links">
+        <a href="https://www.viaccess-orca.com/privacy-policy">Privacy Policy</a>
+        <a href="https://www.viaccess-orca.com/hubfs/Cookie%20policy%20Viaccess-Orca.pdf">Cookie Policy</a>
+        <a href="https://www.viaccess-orca.com/legal-notice">Legal Notice</a>
+        <a href="https://www.viaccess-orca.com/terms-conditions-viaccess-orca">Terms & Conditions</a>
+        <a href="https://helloethics-orange.integrityline.com/?lang=en">Issue an alert</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
