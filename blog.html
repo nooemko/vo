@@ -27,22 +27,46 @@
       color: var(--text);
     }
 
+    /* ── TOP BAR ── */
+    .top-bar {
+      background: #fff; border-bottom: 1px solid #e8e8e8;
+      padding: 0 40px; height: 36px;
+      display: flex; align-items: center; justify-content: flex-end; gap: 20px;
+    }
+    .top-bar a { font-size: 12px; color: #666; text-decoration: none; transition: color .2s; }
+    .top-bar a:hover { color: #000; }
+    .top-bar .top-contact { background: #9A488D; color: #fff; padding: 4px 14px; border-radius: 3px; font-size: 12px; font-weight: 600; }
+    .top-bar .top-contact:hover { opacity: .85; color: #fff; }
+
     /* ── NAV ── */
     nav {
       position: sticky; top: 0; z-index: 100;
-      background: var(--darker);
-      border-bottom: 1px solid var(--border);
+      background: #fff; border-bottom: 1px solid #e8e8e8;
       display: flex; align-items: center; justify-content: space-between;
-      padding: 0 40px; height: 72px;
+      padding: 0 40px; height: 68px; box-shadow: 0 2px 8px rgba(0,0,0,.06);
     }
-    .nav-logo { font-size: 20px; font-weight: 800; color: var(--white); letter-spacing: -.5px; }
-    .nav-logo span { color: var(--purple); }
-    .nav-links { display: flex; gap: 32px; align-items: center; }
-    .nav-links a { text-decoration: none; color: var(--text-dim); font-size: 14px; font-weight: 500; transition: color .2s; }
-    .nav-links a:hover { color: var(--white); }
-    .nav-links a.active { color: var(--purple); }
-    .nav-cta { background: var(--purple); color: #fff; padding: 9px 20px; border-radius: 4px; font-size: 13px; font-weight: 600; text-decoration: none; transition: opacity .2s; }
-    .nav-cta:hover { opacity: .85; }
+    .nav-logo img { height: 38px; display: block; }
+    .nav-main { display: flex; align-items: center; }
+    .nav-item { position: relative; }
+    .nav-item > a {
+      display: flex; align-items: center; gap: 5px;
+      text-decoration: none; color: #000; font-size: 13.5px; font-weight: 500;
+      padding: 0 16px; height: 68px; transition: color .2s; white-space: nowrap;
+    }
+    .nav-item > a:hover, .nav-item:hover > a { color: #9A488D; }
+    .nav-item > a.active { color: #9A488D; }
+    .nav-item > a svg { transition: transform .2s; color: #999; }
+    .nav-item:hover > a svg { transform: rotate(180deg); }
+    .nav-dropdown {
+      display: none; position: absolute; top: 100%; left: 0;
+      background: #fff; border: 1px solid #e8e8e8; border-top: 2px solid #9A488D;
+      border-radius: 0 0 8px 8px; min-width: 220px;
+      box-shadow: 0 8px 24px rgba(0,0,0,.1); z-index: 200; padding: 8px 0;
+    }
+    .nav-item:hover .nav-dropdown { display: block; }
+    .nav-dropdown a { display: block; padding: 9px 20px; font-size: 13px; color: #333; text-decoration: none; font-weight: 400; transition: color .2s, background .2s; }
+    .nav-dropdown a:hover { color: #9A488D; background: #faf7fa; }
+    .nav-dropdown .dropdown-section { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #aaa; padding: 10px 20px 4px; pointer-events: none; }
 
     /* ── HERO ── */
     .hero {
@@ -63,18 +87,12 @@
       background: var(--purple);
     }
     .hero-inner { max-width: 1100px; margin: 0 auto; }
-    .hero-label {
-      display: inline-block; background: var(--purple-dim); color: var(--purple);
-      border: 1px solid rgba(163,102,156,.3);
-      font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
-      padding: 4px 12px; border-radius: 20px; margin-bottom: 20px;
-    }
     .hero h1 {
-      font-size: 52px; font-weight: 800; color: var(--white);
+      font-size: 64px; font-weight: 800; color: var(--white);
       line-height: 1.1; letter-spacing: -1px; margin-bottom: 16px;
     }
     .hero p {
-      font-size: 17px; color: var(--text-dim); max-width: 520px; line-height: 1.65; font-weight: 300;
+      font-size: 20px; color: var(--text-dim); max-width: 520px; line-height: 1.65; font-weight: 300;
     }
 
     /* ── FILTER BAR ── */
@@ -85,11 +103,11 @@
       position: sticky; top: 72px; z-index: 90;
     }
     .filter-bar-inner { max-width: 1100px; margin: 0 auto; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
-    .filter-label { font-size: 12px; color: var(--text-faint); font-weight: 500; margin-right: 4px; }
+    .filter-label { font-size: 14px; color: var(--text-faint); font-weight: 500; margin-right: 4px; }
     .filter-btn {
-      padding: 6px 14px; border-radius: 20px;
+      padding: 7px 16px; border-radius: 20px;
       border: 1px solid var(--border);
-      font-size: 12px; font-weight: 500; cursor: pointer;
+      font-size: 14px; font-weight: 500; cursor: pointer;
       background: transparent; color: var(--text-dim);
       font-family: 'Rubik', sans-serif;
       transition: all .2s;
@@ -118,39 +136,41 @@
     .featured-post:hover .featured-post-img img { transform: scale(1.04); }
     .featured-tag {
       position: absolute; top: 20px; left: 20px;
-      background: var(--purple); color: #fff;
-      font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
-      padding: 4px 10px; border-radius: 2px;
+      background: rgba(26,36,40,.85); color: #fff;
+      border: 1px solid rgba(255,255,255,.15);
+      font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .8px;
+      padding: 3px 9px; border-radius: 20px;
+      backdrop-filter: blur(4px);
     }
     .featured-post-body {
       padding: 40px 44px;
       display: flex; flex-direction: column; justify-content: center;
     }
     .post-category {
-      font-size: 11px; font-weight: 600; color: var(--purple);
+      font-size: 14px; font-weight: 600; color: var(--purple);
       text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px;
     }
     .featured-post-body h2 {
-      font-size: 26px; font-weight: 700; color: var(--white);
+      font-size: 32px; font-weight: 700; color: var(--white);
       line-height: 1.3; margin-bottom: 16px;
     }
     .featured-post-body p {
-      font-size: 14px; color: var(--text-dim); line-height: 1.7; margin-bottom: 28px;
+      font-size: 16px; color: var(--text-dim); line-height: 1.7; margin-bottom: 28px;
     }
     .post-meta {
       display: flex; align-items: center; gap: 16px;
-      font-size: 12px; color: var(--text-faint);
+      font-size: 14px; color: var(--text-faint);
     }
     .post-meta-author { display: flex; align-items: center; gap: 8px; }
     .author-avatar {
       width: 28px; height: 28px; border-radius: 50%;
       background: var(--purple-dim); border: 1px solid rgba(163,102,156,.3);
       display: flex; align-items: center; justify-content: center;
-      font-size: 11px; font-weight: 700; color: var(--purple);
+      font-size: 12px; font-weight: 700; color: var(--purple);
     }
     .read-more {
       display: inline-flex; align-items: center; gap: 6px;
-      color: var(--purple); font-size: 13px; font-weight: 600;
+      color: var(--purple); font-size: 16px; font-weight: 600;
       text-decoration: none; margin-top: auto;
       transition: gap .2s;
     }
@@ -158,14 +178,15 @@
 
     /* ── BLOG GRID ── */
     .section-header { margin-bottom: 28px; }
-    .section-header h3 { font-size: 20px; font-weight: 700; color: var(--white); }
-    .section-divider { width: 32px; height: 3px; background: var(--purple); margin-top: 10px; }
+    .section-header h3 { font-size: 24px; font-weight: 700; color: var(--white); }
 
     .blog-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
+      grid-auto-rows: 1fr;
       gap: 24px;
     }
+    .blog-grid > a { display: flex; }
 
     .blog-card {
       background: var(--card-bg);
@@ -189,18 +210,19 @@
     .blog-card:hover .blog-card-img img { transform: scale(1.04); }
     .blog-card-img-tag {
       position: absolute; top: 14px; left: 14px;
-      background: var(--purple-dim); color: var(--purple);
-      border: 1px solid rgba(163,102,156,.3);
-      font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .8px;
+      background: rgba(26,36,40,.85); color: #fff;
+      border: 1px solid rgba(255,255,255,.15);
+      font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .8px;
       padding: 3px 9px; border-radius: 20px;
+      backdrop-filter: blur(4px);
     }
     .blog-card-body { padding: 20px 22px 24px; flex: 1; display: flex; flex-direction: column; }
     .blog-card-body h4 {
-      font-size: 15px; font-weight: 700; color: var(--white);
+      font-size: 18px; font-weight: 700; color: var(--white);
       line-height: 1.4; margin-bottom: 10px;
     }
     .blog-card-body p {
-      font-size: 13px; color: var(--text-dim); line-height: 1.65;
+      font-size: 16px; color: var(--text-dim); line-height: 1.65;
       margin-bottom: 20px; flex: 1;
       display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
     }
@@ -210,9 +232,9 @@
       margin-top: auto;
     }
     .blog-card-meta { display: flex; align-items: center; gap: 8px; }
-    .blog-card-meta .author-avatar { width: 24px; height: 24px; font-size: 10px; }
-    .blog-card-meta span { font-size: 12px; color: var(--text-faint); }
-    .blog-card-date { font-size: 11px; color: var(--text-faint); }
+    .blog-card-meta .author-avatar { width: 24px; height: 24px; font-size: 12px; }
+    .blog-card-meta span { font-size: 14px; color: var(--text-faint); }
+    .blog-card-date { font-size: 14px; color: var(--text-faint); }
 
     /* ── PAGINATION ── */
     .pagination {
@@ -220,9 +242,9 @@
       gap: 8px; margin-top: 56px;
     }
     .page-btn {
-      width: 36px; height: 36px; border-radius: 6px;
+      width: 40px; height: 40px; border-radius: 6px;
       border: 1px solid var(--border); background: transparent;
-      color: var(--text-dim); font-size: 13px; font-weight: 500;
+      color: var(--text-dim); font-size: 16px; font-weight: 500;
       cursor: pointer; font-family: 'Rubik', sans-serif;
       display: flex; align-items: center; justify-content: center;
       transition: all .2s;
@@ -234,18 +256,18 @@
 
     /* ── NEWSLETTER BANNER ── */
     .newsletter {
-      background: linear-gradient(135deg, rgba(163,102,156,.2) 0%, rgba(38,51,56,.6) 100%);
-      border: 1px solid rgba(163,102,156,.25);
+      background: linear-gradient(to bottom right, #A3669C 0%, #7a4d7a 30%, #3d3550 60%, #2a2a3a 100%);
+      border: 1px solid rgba(163,102,156,.4);
       border-radius: 12px; padding: 48px 56px;
       text-align: center; margin-bottom: 56px;
     }
-    .newsletter h3 { font-size: 26px; font-weight: 700; color: var(--white); margin-bottom: 10px; }
-    .newsletter p { font-size: 15px; color: var(--text-dim); margin-bottom: 28px; }
+    .newsletter h3 { font-size: 32px; font-weight: 700; color: var(--white); margin-bottom: 10px; }
+    .newsletter p { font-size: 18px; color: var(--text-dim); margin-bottom: 28px; }
     .newsletter-form { display: flex; gap: 10px; max-width: 420px; margin: 0 auto; }
     .newsletter-form input {
       flex: 1; padding: 10px 16px; border-radius: 6px;
       border: 1px solid var(--border); background: rgba(255,255,255,.07);
-      color: var(--white); font-family: 'Rubik', sans-serif; font-size: 14px;
+      color: var(--white); font-family: 'Rubik', sans-serif; font-size: 16px;
       outline: none; transition: border-color .2s;
     }
     .newsletter-form input::placeholder { color: var(--text-faint); }
@@ -253,46 +275,92 @@
     .newsletter-form button {
       padding: 10px 20px; background: var(--purple); color: #fff;
       border: none; border-radius: 6px; font-family: 'Rubik', sans-serif;
-      font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap;
+      font-size: 16px; font-weight: 600; cursor: pointer; white-space: nowrap;
       transition: opacity .2s;
     }
     .newsletter-form button:hover { opacity: .85; }
 
     /* ── FOOTER ── */
-    footer { background: var(--darker); border-top: 1px solid var(--border); padding: 56px 40px 32px; }
-    .footer-inner { max-width: 1100px; margin: 0 auto; }
-    .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; padding-bottom: 40px; border-bottom: 1px solid var(--border); margin-bottom: 32px; }
-    .footer-brand .logo { font-size: 18px; font-weight: 800; color: #fff; margin-bottom: 12px; }
-    .footer-brand .logo span { color: var(--purple); }
-    .footer-brand p { font-size: 13px; color: var(--text-dim); line-height: 1.7; max-width: 240px; }
-    .footer-col h5 { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--white); margin-bottom: 16px; }
-    .footer-col a { display: block; font-size: 13px; color: var(--text-dim); text-decoration: none; margin-bottom: 8px; transition: color .2s; }
-    .footer-col a:hover { color: #fff; }
-    .footer-bottom { display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--text-faint); }
+    footer { background: #efefef; border-top: 1px solid #ddd; }
+    .footer-top { padding: 48px 40px 40px; border-bottom: 1px solid #ddd; }
+    .footer-top-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; }
+    .footer-col-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #111; margin-bottom: 16px; }
+    .footer-col-title a { color: #111; text-decoration: none; }
+    .footer-top a { display: block; font-size: 13px; color: #555; text-decoration: none; margin-bottom: 9px; transition: color .2s; }
+    .footer-top a:hover { color: #9A488D; }
+    .footer-mid { padding: 24px 40px; border-bottom: 1px solid #ddd; }
+    .footer-mid-inner { max-width: 1100px; margin: 0 auto; width: 100%; display: flex; align-items: center; justify-content: space-between; }
+    .footer-logo img { height: 44px; }
+    .footer-social { display: flex; align-items: center; gap: 16px; }
+    .footer-social a { color: #999; text-decoration: none; transition: color .2s; display: flex; align-items: center; }
+    .footer-social a:hover { color: #9A488D; }
+    .footer-social svg { width: 18px; height: 18px; }
+    .footer-demo { background: transparent; color: #9A488D; border: 1.5px solid #9A488D; padding: 7px 18px; border-radius: 4px; font-size: 13px; font-weight: 600; text-decoration: none; transition: all .2s; }
+    .footer-demo:hover { background: #9A488D; color: #fff !important; }
+    .footer-bottom { padding: 18px 40px; }
+    .footer-bottom-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; font-size: 12px; color: #888; }
     .footer-bottom-links { display: flex; gap: 20px; }
-    .footer-bottom-links a { color: var(--text-faint); text-decoration: none; }
-    .footer-bottom-links a:hover { color: var(--text-dim); }
+    .footer-bottom-links a { color: #888; text-decoration: none; transition: color .2s; }
+    .footer-bottom-links a:hover { color: #555; }
   </style>
 </head>
 <body>
 
+<!-- TOP BAR -->
+<div class="top-bar">
+  <a href="/es">ES</a>
+  <a href="https://viaccess-orca.my.salesforce.com/">Login</a>
+  <a href="https://www.viaccess-orca.com/contact" class="top-contact">Contact Us</a>
+</div>
+
 <!-- NAV -->
 <nav>
-  <div class="nav-logo">Viaccess<span>-Orca</span></div>
-  <div class="nav-links">
-    <a href="#">TV & Video Solutions</a>
-    <a href="#">About Us</a>
-    <a href="#">News & Events</a>
-    <a href="#">Resources</a>
-    <a href="#" class="active">Blog</a>
-    <a href="#" class="nav-cta">Contact Us</a>
+  <div class="nav-logo"><a href="https://www.viaccess-orca.com"><img src="https://www.viaccess-orca.com/hubfs/VO%20LOGO-1.svg" alt="Viaccess-Orca"></a></div>
+  <div class="nav-main">
+    <div class="nav-item">
+      <a href="#">TV & Video Solutions <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></a>
+      <div class="nav-dropdown">
+        <div class="dropdown-section">Connect & Deliver</div>
+        <a href="https://www.viaccess-orca.com/ott-tv">IPTV & OTT Platforms</a>
+        <a href="https://www.viaccess-orca.com/secure-player">Secure Video Player</a>
+        <a href="https://www.viaccess-orca.com/tv-apps">TV APPS</a>
+        <div class="dropdown-section">Protect & Secure</div>
+        <a href="https://www.viaccess-orca.com/tv-piracy">Anti-Piracy Services</a>
+        <a href="https://www.viaccess-orca.com/tv-piracy/dynamic-watermarking">Dynamic Watermarking</a>
+        <a href="https://www.viaccess-orca.com/conditional-access-system">CAS Solutions</a>
+        <a href="https://www.viaccess-orca.com/drm-solutions">DRM Solutions</a>
+        <div class="dropdown-section">Engage & Monetize</div>
+        <a href="https://www.viaccess-orca.com/targeted-advertising">TV Advertising Solutions</a>
+        <a href="https://www.viaccess-orca.com/tv-analytics">Data Intelligence & Personalization</a>
+        <a href="https://www.viaccess-orca.com/sports-ott-video-services">Sports Streaming</a>
+      </div>
+    </div>
+    <div class="nav-item">
+      <a href="#">About Us <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></a>
+      <div class="nav-dropdown">
+        <a href="https://www.viaccess-orca.com/who-we-are/vo-at-a-glance">Why VO</a>
+        <a href="https://www.viaccess-orca.com/customers">Customers</a>
+        <a href="https://www.viaccess-orca.com/who-we-are/partners">Partners</a>
+        <a href="https://www.viaccess-orca.com/testimonials">Success Stories</a>
+        <a href="https://www.viaccess-orca.com/careers">Careers</a>
+      </div>
+    </div>
+    <div class="nav-item">
+      <a href="#">News & Events <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></a>
+      <div class="nav-dropdown">
+        <a href="https://www.viaccess-orca.com/what-s-new/vo-in-the-news">In the News</a>
+        <a href="https://www.viaccess-orca.com/what-s-new/events">Events</a>
+        <a href="https://www.viaccess-orca.com/what-s-new/pr">Press Releases</a>
+      </div>
+    </div>
+    <div class="nav-item"><a href="https://www.viaccess-orca.com/what-s-new/resource-center">Resources</a></div>
+    <div class="nav-item"><a href="https://www.viaccess-orca.com/blog/" class="active">Blog</a></div>
   </div>
 </nav>
 
 <!-- HERO -->
 <section class="hero">
   <div class="hero-inner">
-    <div class="hero-label">Insights & Perspectives</div>
     <h1>The VO Blog</h1>
     <p>Expert perspectives on streaming, content security, monetization, and the future of TV.</p>
   </div>
@@ -323,7 +391,6 @@
       <div class="featured-tag">Featured</div>
     </div>
     <div class="featured-post-body">
-      <div class="post-category">Analytics</div>
       <h2>How AI Is Changing Content Discovery</h2>
       <p>AI is revolutionizing content discovery by enhancing user interaction and recommendation precision. Solid foundations and strategic alignment are key to unlocking its full potential for streaming platforms.</p>
       <div class="post-meta" style="margin-bottom: 28px;">
@@ -355,7 +422,6 @@
   <!-- RECENT POSTS -->
   <div class="section-header">
     <h3>Latest Articles</h3>
-    <div class="section-divider"></div>
   </div>
 
   <div class="blog-grid">
@@ -481,40 +547,60 @@
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-inner">
-    <div class="footer-top">
-      <div class="footer-brand">
-        <div class="logo">Viaccess<span>-Orca</span></div>
-        <p>Empowering content providers with secure, flexible, and innovative solutions for the connected world.</p>
+  <div class="footer-top">
+    <div class="footer-top-inner">
+      <div>
+        <div class="footer-col-title"><a href="https://www.viaccess-orca.com">Viaccess-Orca</a></div>
+        <a href="https://www.viaccess-orca.com/ott-tv">IPTV & OTT Platforms</a>
+        <a href="https://www.viaccess-orca.com/targeted-advertising">TV Advertising Solutions</a>
+        <a href="https://www.viaccess-orca.com/secure-player">Secure Player</a>
+        <a href="https://www.viaccess-orca.com/tv-apps">TV APPS</a>
       </div>
-      <div class="footer-col">
-        <h5>Solutions</h5>
-        <a href="#">Content Security</a>
-        <a href="#">Streaming</a>
-        <a href="#">Monetization</a>
-        <a href="#">Analytics</a>
+      <div>
+        <div class="footer-col-title">Protect & Secure</div>
+        <a href="https://www.viaccess-orca.com/tv-piracy/dynamic-watermarking">Dynamic Watermarking</a>
+        <a href="https://www.viaccess-orca.com/conditional-access-system">CAS Solutions</a>
+        <a href="https://www.viaccess-orca.com/tv-piracy">Anti-Piracy Solutions</a>
+        <a href="https://www.viaccess-orca.com/sports-ott-video-services">Live Sports Solutions</a>
       </div>
-      <div class="footer-col">
-        <h5>Company</h5>
-        <a href="#">About Us</a>
-        <a href="#">News & Events</a>
-        <a href="#">Blog</a>
-        <a href="#">Careers</a>
+      <div>
+        <div class="footer-col-title">News & Resources</div>
+        <a href="https://www.viaccess-orca.com/what-s-new/resource-center">Resources</a>
+        <a href="https://www.viaccess-orca.com/blog">Blog</a>
+        <a href="https://www.viaccess-orca.com/what-s-new/events">Events</a>
+        <a href="https://www.viaccess-orca.com/what-s-new/vo-in-the-news">News</a>
       </div>
-      <div class="footer-col">
-        <h5>Resources</h5>
-        <a href="#">Documentation</a>
-        <a href="#">Case Studies</a>
-        <a href="#">Contact Us</a>
-        <a href="#">Support</a>
+      <div>
+        <div class="footer-col-title">Company</div>
+        <a href="https://www.viaccess-orca.com/who-we-are/vo-at-a-glance">Why VO</a>
+        <a href="https://www.viaccess-orca.com/customers">Customers</a>
+        <a href="https://www.viaccess-orca.com/who-we-are/partners">Partners</a>
+        <a href="https://www.viaccess-orca.com/careers">Careers</a>
       </div>
     </div>
-    <div class="footer-bottom">
-      <span>© 2026 Viaccess-Orca. All rights reserved.</span>
+  </div>
+  <div class="footer-mid">
+    <div class="footer-mid-inner">
+      <img src="https://www.viaccess-orca.com/hubfs/Always%20EVOLVE_Grey-sm.svg" alt="Always Evolve" style="height:32px; opacity:.7;">
+      <div class="footer-social">
+        <a href="https://www.facebook.com/pages/Orca-Interactive/173831905982882" title="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
+        <a href="https://twitter.com/ViaccessOrca" title="X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+        <a href="https://www.youtube.com/ViaccessOrca" title="YouTube"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 00-1.95 1.96A29 29 0 001 12a29 29 0 00.46 5.58a2.78 2.78 0 001.95 1.95C5.12 20 12 20 12 20s6.88 0 8.59-.47a2.78 2.78 0 001.95-1.95A29 29 0 0023 12a29 29 0 00-.46-5.58zM9.75 15.02V8.98L15.5 12z"/></svg></a>
+        <a href="https://www.linkedin.com/company/viaccess-orca" title="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg></a>
+        <a href="https://www.viaccess-orca.com/request-a-demo" class="footer-demo">Request a demo</a>
+      </div>
+      <div class="footer-logo"><img src="https://www.viaccess-orca.com/hubfs/VO-LOGO-footer.png" alt="Viaccess-Orca"></div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-bottom-inner">
+      <span>Copyright © 2026 Viaccess, trading as Viaccess-Orca. All Rights Reserved.</span>
       <div class="footer-bottom-links">
-        <a href="#">Privacy Policy</a>
-        <a href="#">Cookie Policy</a>
-        <a href="#">Terms & Conditions</a>
+        <a href="https://www.viaccess-orca.com/privacy-policy">Privacy Policy</a>
+        <a href="https://www.viaccess-orca.com/hubfs/Cookie%20policy%20Viaccess-Orca.pdf">Cookie Policy</a>
+        <a href="https://www.viaccess-orca.com/legal-notice">Legal Notice</a>
+        <a href="https://www.viaccess-orca.com/terms-conditions-viaccess-orca">Terms & Conditions</a>
+        <a href="https://helloethics-orange.integrityline.com/?lang=en">Issue an alert</a>
       </div>
     </div>
   </div>
