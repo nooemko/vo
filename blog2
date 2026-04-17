@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog — Viaccess-Orca</title>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --dark:      #263338;
+      --darker:    #1a2428;
+      --card-bg:   #2e3e44;
+      --purple:    #A3669C;
+      --purple-dim: rgba(163,102,156,.15);
+      --white:     #FFFFFF;
+      --text:      rgba(255,255,255,.88);
+      --text-dim:  rgba(255,255,255,.55);
+      --text-faint:rgba(255,255,255,.35);
+      --border:    rgba(255,255,255,.1);
+    }
+
+    body {
+      font-family: 'Rubik', system-ui, sans-serif;
+      background: var(--dark);
+      color: var(--text);
+    }
+
+    /* ── TOP BAR ── */
+    .top-bar {
+      background: #fff; border-bottom: 1px solid #e8e8e8;
+      padding: 0 40px; height: 36px;
+      display: flex; align-items: center; justify-content: flex-end; gap: 20px;
+    }
+    .top-bar a { font-size: 12px; color: #666; text-decoration: none; transition: color .2s; }
+    .top-bar a:hover { color: #000; }
+    .top-bar .top-contact { background: #9A488D; color: #fff; padding: 4px 14px; border-radius: 3px; font-size: 12px; font-weight: 600; }
+    .top-bar .top-contact:hover { opacity: .85; color: #fff; }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: #fff; border-bottom: 1px solid #e8e8e8;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 40px; height: 76px; box-shadow: 0 2px 8px rgba(0,0,0,.06);
+    }
+    .nav-logo img { height: 52px; display: block; }
+    .nav-cta {
+      display: inline-block; background: #9A488D; color: #fff;
+      padding: 9px 20px; border-radius: 4px; font-size: 13.5px; font-weight: 600;
+      text-decoration: none; margin-left: 12px; white-space: nowrap;
+      transition: opacity .2s;
+    }
+    .nav-cta:hover { opacity: .85; }
+    .nav-search {
+      display: flex; align-items: center; justify-content: center;
+      width: 36px; height: 36px; border-radius: 6px;
+      border: none; background: transparent; cursor: pointer;
+      color: #999; margin-left: 4px;
+      transition: color .2s, background .2s;
+    }
+    .nav-search:hover { color: #9A488D; background: #f5f0f5; }
+    .nav-main { display: flex; align-items: center; }
+    .nav-item { position: relative; }
+    .nav-item > a {
+      display: flex; align-items: center; gap: 5px;
+      text-decoration: none; color: #000; font-size: 13.5px; font-weight: 500;
+      padding: 0 16px; height: 76px; transition: color .2s; white-space: nowrap;
+    }
+    .nav-item > a:hover, .nav-item:hover > a { color: #9A488D; }
+    .nav-item > a.active { color: #9A488D; }
+    .nav-item > a svg { transition: transform .2s; color: #999; }
+    .nav-item:hover > a svg { transform: rotate(180deg); }
+    .nav-dropdown {
+      display: none; position: absolute; top: 100%; left: 0;
+      background: #fff; border: 1px solid #e8e8e8; border-top: 2px solid #9A488D;
+      border-radius: 0 0 8px 8px; min-width: 220px;
+      box-shadow: 0 8px 24px rgba(0,0,0,.1); z-index: 200; padding: 8px 0;
+    }
+    .nav-item:hover .nav-dropdown { display: block; }
+    .nav-dropdown a { display: block; padding: 9px 20px; font-size: 13px; color: #333; text-decoration: none; font-weight: 400; transition: color .2s, background .2s; }
+    .nav-dropdown a:hover { color: #9A488D; background: #faf7fa; }
+    .nav-dropdown .dropdown-section { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #aaa; padding: 10px 20px 4px; pointer-events: none; }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative; overflow: hidden;
+      min-height: 220px; display: flex; align-items: center;
+      background: url('https://nooemko.github.io/vo/2.jpg') center/cover no-repeat;
+    }
+    .hero-stars { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+    .hero-inner {
+      position: relative; z-index: 2;
+      max-width: 1100px; width: 100%; margin: 0 auto;
+      padding: 48px 40px;
+      display: flex; align-items: center; justify-content: space-between; gap: 40px;
+    }
+    /* ── LIGHT SECTION ── */
+    .section-light { background: #ffffff; border-top: 1px solid #e8e8e8; border-bottom: 1px solid #e8e8e8; }
+    .section-light .section-header h2 { color: #1a2428; }
+    .section-light .section-header h2 em { color: var(--purple); }
+    .section-light .section-header p { color: #555; }
+    .hero h1 { font-size: 56px; font-weight: 800; color: var(--white); line-height: 1.1; letter-spacing: -1px; margin-bottom: 14px; }
+    .hero p { font-size: 18px; color: var(--text-dim); max-width: 440px; line-height: 1.65; font-weight: 300; }
+    .hero-icon { flex-shrink: 0; }
+    .hero-icon svg { width: 150px; height: 150px; filter: drop-shadow(0 0 20px rgba(163,102,156,0.55)); }
+
+    /* ── FILTER BAR ── */
+    .filter-bar {
+      background: var(--darker);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 40px;
+      position: sticky; top: 76px; z-index: 90;
+    }
+    .filter-bar-inner { max-width: 1100px; margin: 0 auto; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+    .filter-label { font-size: 14px; color: var(--text-faint); font-weight: 500; margin-right: 4px; }
+    .filter-btn {
+      padding: 7px 16px; border-radius: 20px;
+      border: 1px solid var(--border);
+      font-size: 14px; font-weight: 500; cursor: pointer;
+      background: transparent; color: var(--text-dim);
+      font-family: 'Rubik', sans-serif;
+      transition: all .2s;
+    }
+    .filter-btn:hover { border-color: var(--purple); color: var(--purple); }
+    .filter-btn.active { background: var(--purple); border-color: var(--purple); color: #fff; }
+
+    /* ── MAIN LAYOUT ── */
+    .main { max-width: 1100px; margin: 0 auto; padding: 56px 40px; }
+
+    /* ── FEATURED POST ── */
+    .featured-post {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 0; border-radius: 12px; overflow: hidden;
+      border: 1px solid var(--border);
+      margin-bottom: 56px;
+      background: var(--card-bg);
+      transition: box-shadow .3s;
+    }
+    .featured-post:hover { box-shadow: 0 16px 48px rgba(0,0,0,.35); }
+    .featured-post-img {
+      min-height: 340px;
+      position: relative; overflow: hidden;
+    }
+    .featured-post-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .4s; }
+    .featured-post:hover .featured-post-img img { transform: scale(1.04); }
+    .featured-tag {
+      position: absolute; top: 20px; left: 20px;
+      background: rgba(26,36,40,.85); color: #fff;
+      border: 1px solid rgba(255,255,255,.15);
+      font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .8px;
+      padding: 3px 9px; border-radius: 20px;
+      backdrop-filter: blur(4px);
+    }
+    .featured-post-body {
+      padding: 40px 44px;
+      display: flex; flex-direction: column; justify-content: center;
+    }
+    .post-category {
+      font-size: 14px; font-weight: 600; color: var(--purple);
+      text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px;
+    }
+    .featured-post-body h2 {
+      font-size: 32px; font-weight: 700; color: var(--white);
+      line-height: 1.3; margin-bottom: 16px;
+    }
+    .featured-post-body p {
+      font-size: 16px; color: var(--text-dim); line-height: 1.7; margin-bottom: 28px;
+    }
+    .post-meta {
+      display: flex; align-items: center; gap: 16px;
+      font-size: 14px; color: var(--text-faint);
+    }
+    .post-meta-author { display: flex; align-items: center; gap: 8px; }
+    .read-more {
+      display: inline-flex; align-items: center; gap: 6px;
+      color: var(--purple); font-size: 16px; font-weight: 600;
+      text-decoration: none; margin-top: auto;
+      transition: gap .2s;
+    }
+    .read-more:hover { gap: 10px; }
+
+    /* ── BLOG GRID ── */
+    .section-header { margin-bottom: 28px; }
+    .section-header h3 { font-size: 24px; font-weight: 700; color: var(--white); }
+
+    .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-auto-rows: 1fr;
+      gap: 24px;
+    }
+    .blog-grid > a { display: flex; }
+
+    .blog-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px; overflow: hidden;
+      display: flex; flex-direction: column;
+      transition: box-shadow .25s, transform .25s, border-color .25s;
+    }
+    .blog-card:hover {
+      box-shadow: 0 12px 40px rgba(0,0,0,.3);
+      transform: translateY(-3px);
+      border-color: rgba(163,102,156,.35);
+    }
+    .blog-card-img {
+      height: 180px;
+      background: #1e2e34;
+      display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden;
+    }
+    .blog-card-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .4s; }
+    .blog-card:hover .blog-card-img img { transform: scale(1.04); }
+    .blog-card-img-tag {
+      position: absolute; top: 14px; left: 14px;
+      background: rgba(26,36,40,.85); color: #fff;
+      border: 1px solid rgba(255,255,255,.15);
+      font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .8px;
+      padding: 3px 9px; border-radius: 20px;
+      backdrop-filter: blur(4px);
+    }
+    .blog-card-body { padding: 20px 22px 24px; flex: 1; display: flex; flex-direction: column; }
+    .blog-card-body h4 {
+      font-size: 18px; font-weight: 700; color: var(--white);
+      line-height: 1.4; margin-bottom: 10px;
+    }
+    .blog-card-body p {
+      font-size: 16px; color: var(--text-dim); line-height: 1.65;
+      margin-bottom: 20px; flex: 1;
+      display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .blog-card-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      padding-top: 16px; border-top: 1px solid var(--border);
+      margin-top: auto;
+    }
+    .blog-card-meta { display: flex; align-items: center; gap: 8px; }
+    .blog-card-meta span { font-size: 14px; color: #D1B8D9; }
+    .blog-card-date { font-size: 14px; color: #D1B8D9; }
+
+    /* ── PAGINATION ── */
+    .pagination {
+      display: flex; align-items: center; justify-content: center;
+      gap: 8px; margin-top: 56px;
+    }
+    .page-btn {
+      width: 40px; height: 40px; border-radius: 6px;
+      border: 1px solid var(--border); background: transparent;
+      color: var(--text-dim); font-size: 16px; font-weight: 500;
+      cursor: pointer; font-family: 'Rubik', sans-serif;
+      display: flex; align-items: center; justify-content: center;
+      transition: all .2s;
+    }
+    .page-btn:hover { border-color: var(--purple); color: var(--purple); }
+    .page-btn.active { background: var(--purple); border-color: var(--purple); color: #fff; }
+    .page-btn.arrow { font-size: 16px; }
+    .page-dots { color: var(--text-faint); font-size: 14px; padding: 0 4px; }
+
+    /* ── NEWSLETTER BANNER ── */
+    .newsletter {
+      background: linear-gradient(to bottom right, #A3669C 0%, #7a4d7a 30%, #3d3550 60%, #2a2a3a 100%);
+      border: 1px solid rgba(163,102,156,.4);
+      border-radius: 12px; padding: 48px 56px;
+      text-align: center; margin-bottom: 56px;
+    }
+    .newsletter h3 { font-size: 32px; font-weight: 700; color: var(--white); margin-bottom: 10px; }
+    .newsletter p { font-size: 18px; color: var(--text-dim); margin-bottom: 28px; }
+    .newsletter-form { display: flex; gap: 10px; max-width: 420px; margin: 0 auto; }
+    .newsletter-form input {
+      flex: 1; padding: 10px 16px; border-radius: 6px;
+      border: 1px solid var(--border); background: rgba(255,255,255,.07);
+      color: var(--white); font-family: 'Rubik', sans-serif; font-size: 16px;
+      outline: none; transition: border-color .2s;
+    }
+    .newsletter-form input::placeholder { color: var(--text-faint); }
+    .newsletter-form input:focus { border-color: var(--purple); }
+    .newsletter-form button {
+      padding: 10px 20px; background: var(--purple); color: #fff;
+      border: none; border-radius: 6px; font-family: 'Rubik', sans-serif;
+      font-size: 16px; font-weight: 600; cursor: pointer; white-space: nowrap;
+      transition: opacity .2s;
+    }
+    .newsletter-form button:hover { opacity: .85; }
+
+    /* ── FOOTER ── */
+    footer { background: #efefef; border-top: 1px solid #ddd; }
+    .footer-top { padding: 48px 40px 40px; border-bottom: 1px solid #ddd; }
+    .footer-top-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; }
+    .footer-col-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #111; margin-bottom: 16px; }
+    .footer-col-title a { color: #111; text-decoration: none; }
+    .footer-top a { display: block; font-size: 13px; color: #555; text-decoration: none; margin-bottom: 9px; transition: color .2s; }
+    .footer-top a:hover { color: #9A488D; }
+    .footer-mid { padding: 24px 40px; border-bottom: 1px solid #ddd; }
+    .footer-mid-inner { max-width: 1100px; margin: 0 auto; width: 100%; display: flex; align-items: center; justify-content: space-between; }
+    .footer-logo img { height: 60px; }
+    .footer-support { color: #555; font-size: 13px; font-weight: 600; text-decoration: none; transition: color .2s; }
+    .footer-support:hover { color: #9A488D; }
+    .footer-social { display: flex; align-items: center; gap: 16px; }
+    .footer-social a { color: #999; text-decoration: none; transition: color .2s; display: flex; align-items: center; }
+    .footer-social a:hover { color: #9A488D; }
+    .footer-social svg { width: 18px; height: 18px; }
+    .footer-demo { background: transparent; color: #9A488D; border: 1.5px solid #9A488D; padding: 7px 18px; border-radius: 4px; font-size: 13px; font-weight: 600; text-decoration: none; transition: all .2s; }
+    .footer-demo:hover { background: #9A488D; color: #fff !important; }
+    .footer-bottom { padding: 18px 40px; }
+    .footer-bottom-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; font-size: 12px; color: #888; }
+    .footer-bottom-links { display: flex; gap: 20px; }
+    .footer-bottom-links a { color: #888; text-decoration: none; transition: color .2s; }
+    .footer-bottom-links a:hover { color: #555; }
+  </style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="top-bar">
+  <a href="/es">ES</a>
+  <a href="https://viaccess-orca.my.salesforce.com/">Login</a>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo"><a href="https://www.viaccess-orca.com"><img src="https://www.viaccess-orca.com/hubfs/VO%20LOGO-1.svg" alt="Viaccess-Orca"></a></div>
+  <div class="nav-main">
+    <div class="nav-item">
+      <a href="#">TV & Video Solutions <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></a>
+      <div class="nav-dropdown">
+        <div class="dropdown-section">Connect & Deliver</div>
+        <a href="https://www.viaccess-orca.com/ott-tv">IPTV & OTT Platforms</a>
+        <a href="https://www.viaccess-orca.com/secure-player">Secure Video Player</a>
+        <a href="https://www.viaccess-orca.com/tv-apps">TV APPS</a>
+        <div class="dropdown-section">Protect & Secure</div>
+        <a href="https://www.viaccess-orca.com/tv-piracy">Anti-Piracy Services</a>
+        <a href="https://www.viaccess-orca.com/tv-piracy/dynamic-watermarking">Dynamic Watermarking</a>
+        <a href="https://www.viaccess-orca.com/conditional-access-system">CAS Solutions</a>
+        <a href="https://www.viaccess-orca.com/drm-solutions">DRM Solutions</a>
+        <div class="dropdown-section">Engage & Monetize</div>
+        <a href="https://www.viaccess-orca.com/targeted-advertising">TV Advertising Solutions</a>
+        <a href="https://www.viaccess-orca.com/tv-analytics">Data Intelligence & Personalization</a>
+        <a href="https://www.viaccess-orca.com/sports-ott-video-services">Sports Streaming</a>
+      </div>
+    </div>
+    <div class="nav-item">
+      <a href="#">About Us <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></a>
+      <div class="nav-dropdown">
+        <a href="https://www.viaccess-orca.com/who-we-are/vo-at-a-glance">Why VO</a>
+        <a href="https://www.viaccess-orca.com/customers">Customers</a>
+        <a href="https://www.viaccess-orca.com/who-we-are/partners">Partners</a>
+        <a href="https://www.viaccess-orca.com/testimonials">Success Stories</a>
+        <a href="https://www.viaccess-orca.com/careers">Careers</a>
+      </div>
+    </div>
+    <div class="nav-item">
+      <a href="#">News & Events <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></a>
+      <div class="nav-dropdown">
+        <a href="https://www.viaccess-orca.com/what-s-new/vo-in-the-news">In the News</a>
+        <a href="https://www.viaccess-orca.com/what-s-new/events">Events</a>
+        <a href="https://www.viaccess-orca.com/what-s-new/pr">Press Releases</a>
+      </div>
+    </div>
+    <div class="nav-item"><a href="https://www.viaccess-orca.com/what-s-new/resource-center">Resources</a></div>
+    <div class="nav-item"><a href="https://www.viaccess-orca.com/blog/" class="active">Blog</a></div>
+    <button class="nav-search" aria-label="Search">
+      <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35" stroke-linecap="round"/></svg>
+    </button>
+    <a href="https://www.viaccess-orca.com/contact" class="nav-cta">Contact Us</a>
+  </div>
+</nav>
+
+<!-- HERO — Option 2: stars only -->
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <h1>The VO Blog</h1>
+      <p>Expert perspectives on streaming, content security, monetization, and the future of TV.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FILTER BAR -->
+<div class="filter-bar">
+  <div class="filter-bar-inner">
+    <span class="filter-label">Topic:</span>
+    <button class="filter-btn active">All</button>
+    <button class="filter-btn">Innovation</button>
+    <button class="filter-btn">OTT & Streaming</button>
+    <button class="filter-btn">Content Security</button>
+    <button class="filter-btn">Monetization</button>
+    <button class="filter-btn">Industry Trends</button>
+    <button class="filter-btn">Company News</button>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- FEATURED POST -->
+  <a href="https://www.viaccess-orca.com/blog/how-ai-is-changing-content-discovery" style="text-decoration:none;color:inherit;display:block;">
+  <div class="featured-post">
+    <div class="featured-post-img">
+      <img src="https://www.viaccess-orca.com/hs-fs/hubfs/ai%20content%20discovery.jpg?width=1200&height=600" alt="How AI Is Changing Content Discovery">
+      <div class="featured-tag">Featured</div>
+    </div>
+    <div class="featured-post-body">
+      <h2>How AI Is Changing Content Discovery</h2>
+      <p>AI is revolutionizing content discovery by enhancing user interaction and recommendation precision. Solid foundations and strategic alignment are key to unlocking its full potential for streaming platforms.</p>
+      <div class="post-meta" style="margin-bottom: 28px;">
+        <div class="post-meta-author">
+          <span>Hadar Tel Mizrahi</span>
+        </div>
+        <span>·</span>
+        <span>Mar 18, 2026</span>
+      </div>
+      <span class="read-more">
+        Read Article
+        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </span>
+    </div>
+  </div>
+  </a>
+
+  <!-- NEWSLETTER -->
+  <div class="newsletter">
+    <h3>Stay Ahead of the Curve</h3>
+    <p>Get the latest insights on streaming, content security, and industry trends delivered to your inbox.</p>
+    <div class="newsletter-form">
+      <input type="email" placeholder="Enter your email address">
+      <button>Subscribe</button>
+    </div>
+  </div>
+
+  <!-- RECENT POSTS -->
+  <div class="section-header">
+    <h3>Latest Articles</h3>
+  </div>
+
+  <div class="blog-grid">
+
+    <a href="https://www.viaccess-orca.com/blog/why-all-companies-need-more-women-in-tech" style="text-decoration:none;color:inherit;">
+    <div class="blog-card">
+      <div class="blog-card-img">
+        <img src="https://www.viaccess-orca.com/hs-fs/hubfs/iwd%202025%20placeholder%202.jpg?width=800&height=400" alt="Women in Tech">
+        <div class="blog-card-img-tag">Trends & Innovation</div>
+      </div>
+      <div class="blog-card-body">
+        <h4>Why All Companies Need More Women in Tech</h4>
+        <p>Gender representation in tech remains concerning, but the business case for change has never been stronger.</p>
+        <div class="blog-card-footer">
+          <div class="blog-card-meta"><span>Noa Gal</span></div>
+          <span class="blog-card-date">Mar 8, 2026</span>
+        </div>
+      </div>
+    </div>
+    </a>
+
+    <a href="https://www.viaccess-orca.com/blog/why-the-user-experience-needs-to-be-more-than-just-an-attractive-interface" style="text-decoration:none;color:inherit;">
+    <div class="blog-card">
+      <div class="blog-card-img">
+        <img src="https://www.viaccess-orca.com/hs-fs/hubfs/content%20discovery%202026.jpg?width=800&height=400" alt="User Experience">
+        <div class="blog-card-img-tag">Data & Engagement</div>
+      </div>
+      <div class="blog-card-body">
+        <h4>Why the User Experience Needs to be More Than Just an Attractive Interface</h4>
+        <p>Content discovery is the defining success measure as streaming volumes surge.</p>
+        <div class="blog-card-footer">
+          <div class="blog-card-meta"><span>Hadar Tel Mizrahi</span></div>
+          <span class="blog-card-date">Mar 5, 2026</span>
+        </div>
+      </div>
+    </div>
+    </a>
+
+    <a href="https://www.viaccess-orca.com/blog/sports-streaming-boom-continues-with-2026-winter-olympics" style="text-decoration:none;color:inherit;">
+    <div class="blog-card">
+      <div class="blog-card-img">
+        <img src="https://www.viaccess-orca.com/hs-fs/hubfs/olympic%20streaming%20v2.jpg?width=800&height=400" alt="Sports Streaming">
+        <div class="blog-card-img-tag">Trends & Innovation</div>
+      </div>
+      <div class="blog-card-body">
+        <h4>Sports Streaming Boom Continues with 2026 Winter Olympics</h4>
+        <p>The 2026 Winter Olympics is set to break streaming records. How are broadcasters preparing for the surge in demand?</p>
+        <div class="blog-card-footer">
+          <div class="blog-card-meta"><span>Noa Gal</span></div>
+          <span class="blog-card-date">Feb 25, 2026</span>
+        </div>
+      </div>
+    </div>
+    </a>
+
+    <a href="https://www.viaccess-orca.com/blog/behind-the-scenes-of-broadcasting-the-2026-winter-olympics" style="text-decoration:none;color:inherit;">
+    <div class="blog-card">
+      <div class="blog-card-img">
+        <img src="https://www.viaccess-orca.com/hs-fs/hubfs/olympic%20broadcasting%20v2.jpg?width=800&height=400" alt="Broadcasting Olympics">
+        <div class="blog-card-img-tag">Evolution of Video</div>
+      </div>
+      <div class="blog-card-body">
+        <h4>Behind the Scenes of Broadcasting the 2026 Winter Olympics</h4>
+        <p>An inside look at the infrastructure and technology powering the most streamed sporting event in history.</p>
+        <div class="blog-card-footer">
+          <div class="blog-card-meta"><span>Noa Gal</span></div>
+          <span class="blog-card-date">Feb 16, 2026</span>
+        </div>
+      </div>
+    </div>
+    </a>
+
+    <a href="https://www.viaccess-orca.com/blog/netflix-ad-revenue-increases-creator-video-growth" style="text-decoration:none;color:inherit;">
+    <div class="blog-card">
+      <div class="blog-card-img">
+        <img src="https://www.viaccess-orca.com/hs-fs/hubfs/tv%20ads%20eyes.jpg?width=800&height=400" alt="Netflix Ad Revenue">
+        <div class="blog-card-img-tag">Trends & Innovation</div>
+      </div>
+      <div class="blog-card-body">
+        <h4>Netflix Ad Revenue Accelerates as Traditional TV Loses Ground to Creator Video</h4>
+        <p>Advertising on streaming platforms is growing faster than expected, while linear TV continues its structural decline.</p>
+        <div class="blog-card-footer">
+          <div class="blog-card-meta"><span>Andy Stout</span></div>
+          <span class="blog-card-date">Feb 5, 2026</span>
+        </div>
+      </div>
+    </div>
+    </a>
+
+    <a href="https://www.viaccess-orca.com/blog/sports-streaming-priorities-2026" style="text-decoration:none;color:inherit;">
+    <div class="blog-card">
+      <div class="blog-card-img">
+        <img src="https://www.viaccess-orca.com/hs-fs/hubfs/sports%20streaming%20downhill%20skiiing.jpg?width=800&height=400" alt="Sports Streaming Priorities">
+        <div class="blog-card-img-tag">Trends & Innovation</div>
+      </div>
+      <div class="blog-card-body">
+        <h4>Six Essential Priorities for Sports Streaming Success in 2026</h4>
+        <p>As sports rights costs soar and viewer expectations rise, here are the six priorities every sports broadcaster must address.</p>
+        <div class="blog-card-footer">
+          <div class="blog-card-meta"><span>Einat Kahana</span></div>
+          <span class="blog-card-date">Jan 22, 2026</span>
+        </div>
+      </div>
+    </div>
+    </a>
+
+  </div>
+
+  <!-- PAGINATION -->
+  <div class="pagination">
+    <button class="page-btn arrow">←</button>
+    <button class="page-btn active">1</button>
+    <button class="page-btn">2</button>
+    <button class="page-btn">3</button>
+    <button class="page-btn">4</button>
+    <button class="page-btn">5</button>
+    <span class="page-dots">···</span>
+    <button class="page-btn">86</button>
+    <button class="page-btn arrow">→</button>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-top-inner">
+      <div>
+        <div class="footer-col-title"><a href="https://www.viaccess-orca.com">Viaccess-Orca</a></div>
+        <a href="https://www.viaccess-orca.com/ott-tv">IPTV & OTT Platforms</a>
+        <a href="https://www.viaccess-orca.com/targeted-advertising">TV Advertising Solutions</a>
+        <a href="https://www.viaccess-orca.com/secure-player">Secure Player</a>
+        <a href="https://www.viaccess-orca.com/tv-apps">TV APPS</a>
+      </div>
+      <div>
+        <div class="footer-col-title">Protect & Secure</div>
+        <a href="https://www.viaccess-orca.com/tv-piracy/dynamic-watermarking">Dynamic Watermarking</a>
+        <a href="https://www.viaccess-orca.com/conditional-access-system">CAS Solutions</a>
+        <a href="https://www.viaccess-orca.com/tv-piracy">Anti-Piracy Solutions</a>
+        <a href="https://www.viaccess-orca.com/sports-ott-video-services">Live Sports Solutions</a>
+      </div>
+      <div>
+        <div class="footer-col-title">News & Resources</div>
+        <a href="https://www.viaccess-orca.com/what-s-new/resource-center">Resources</a>
+        <a href="https://www.viaccess-orca.com/blog">Blog</a>
+        <a href="https://www.viaccess-orca.com/what-s-new/events">Events</a>
+        <a href="https://www.viaccess-orca.com/what-s-new/vo-in-the-news">News</a>
+      </div>
+      <div>
+        <div class="footer-col-title">Company</div>
+        <a href="https://www.viaccess-orca.com/who-we-are/vo-at-a-glance">Why VO</a>
+        <a href="https://www.viaccess-orca.com/customers">Customers</a>
+        <a href="https://www.viaccess-orca.com/who-we-are/partners">Partners</a>
+        <a href="https://www.viaccess-orca.com/careers">Careers</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-mid">
+    <div class="footer-mid-inner">
+      <img src="https://www.viaccess-orca.com/hubfs/Always%20EVOLVE_Grey-sm.svg" alt="Always Evolve" style="height:48px; opacity:.7;">
+      <div class="footer-social">
+        <a href="https://www.facebook.com/pages/Orca-Interactive/173831905982882" title="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
+        <a href="https://twitter.com/ViaccessOrca" title="X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+        <a href="https://www.youtube.com/ViaccessOrca" title="YouTube"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 00-1.95 1.96A29 29 0 001 12a29 29 0 00.46 5.58a2.78 2.78 0 001.95 1.95C5.12 20 12 20 12 20s6.88 0 8.59-.47a2.78 2.78 0 001.95-1.95A29 29 0 0023 12a29 29 0 00-.46-5.58zM9.75 15.02V8.98L15.5 12z"/></svg></a>
+        <a href="https://www.linkedin.com/company/viaccess-orca" title="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg></a>
+        <a href="https://viaccess-orca.my.salesforce.com/" class="footer-support">Customer Support</a>
+        <a href="https://www.viaccess-orca.com/request-a-demo" class="footer-demo">Request a demo</a>
+      </div>
+      <div class="footer-logo"><img src="https://www.viaccess-orca.com/hubfs/VO-LOGO-footer.png" alt="Viaccess-Orca"></div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-bottom-inner">
+      <span>Copyright © 2026 Viaccess, trading as Viaccess-Orca. All Rights Reserved.</span>
+      <div class="footer-bottom-links">
+        <a href="https://www.viaccess-orca.com/privacy-policy">Privacy Policy</a>
+        <a href="https://www.viaccess-orca.com/hubfs/Cookie%20policy%20Viaccess-Orca.pdf">Cookie Policy</a>
+        <a href="https://www.viaccess-orca.com/legal-notice">Legal Notice</a>
+        <a href="https://www.viaccess-orca.com/terms-conditions-viaccess-orca">Terms & Conditions</a>
+        <a href="https://helloethics-orange.integrityline.com/?lang=en">Issue an alert</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
