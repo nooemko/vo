@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>In the News — Viaccess-Orca</title>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --dark:       #263338;
+      --darker:     #1a2428;
+      --card-bg:    #2e3e44;
+      --purple:     #A3669C;
+      --purple-dim: rgba(163,102,156,.15);
+      --white:      #FFFFFF;
+      --text:       rgba(255,255,255,.88);
+      --text-dim:   rgba(255,255,255,.80);
+      --text-faint: rgba(255,255,255,.75);
+      --border:     rgba(255,255,255,.1);
+    }
+
+    body { font-family: 'Rubik', system-ui, sans-serif; background: var(--dark); color: var(--text); }
+
+    /* ── TOP BAR ── */
+    .top-bar {
+      background: #fff; border-bottom: 1px solid #e8e8e8;
+      padding: 0 40px; height: 36px;
+      display: flex; align-items: center; justify-content: flex-end; gap: 20px;
+    }
+    .top-bar a { font-size: 12px; color: #666; text-decoration: none; transition: color .2s; }
+    .top-bar a:hover { color: #000; }
+    .top-bar .top-contact { background: #9A488D; color: #fff; padding: 4px 14px; border-radius: 3px; font-size: 12px; font-weight: 600; }
+    .top-bar .top-contact:hover { opacity: .85; color: #fff; }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: #fff; border-bottom: 1px solid #e8e8e8;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 40px; height: 76px; box-shadow: 0 2px 8px rgba(0,0,0,.06);
+    }
+    .nav-logo img { height: 62px; display: block; }
+    .nav-cta {
+      display: inline-block; background: #9A488D; color: #fff;
+      padding: 9px 20px; border-radius: 4px; font-size: 14px; font-weight: 600;
+      text-decoration: none; margin-left: 12px; white-space: nowrap;
+      transition: opacity .2s;
+    }
+    .nav-cta:hover { opacity: .85; }
+    .nav-search {
+      display: flex; align-items: center; justify-content: center;
+      width: 36px; height: 36px; border-radius: 6px;
+      border: none; background: transparent; cursor: pointer;
+      color: #999; margin-left: 4px;
+      transition: color .2s, background .2s;
+    }
+    .nav-search:hover { color: #9A488D; background: #f5f0f5; }
+    .nav-main { display: flex; align-items: center; }
+    .nav-item { position: relative; }
+    .nav-item > a {
+      display: flex; align-items: center; gap: 5px;
+      text-decoration: none; color: #000; font-size: 14px; font-weight: 500;
+      padding: 0 16px; height: 76px; transition: color .2s; white-space: nowrap;
+    }
+    .nav-item > a:hover, .nav-item:hover > a { color: #9A488D; }
+    .nav-item > a.active { color: #9A488D; }
+    .nav-item > a svg { transition: transform .2s; color: #999; }
+    .nav-item:hover > a svg { transform: rotate(180deg); }
+    .nav-dropdown {
+      display: none; position: absolute; top: 100%; left: 0;
+      background: #fff; border: 1px solid #e8e8e8; border-top: 2px solid #9A488D;
+      border-radius: 0 0 8px 8px; min-width: 220px;
+      box-shadow: 0 8px 24px rgba(0,0,0,.1); z-index: 200; padding: 8px 0;
+    }
+    .nav-item:hover .nav-dropdown { display: block; }
+    .nav-dropdown a { display: block; padding: 9px 20px; font-size: 14px; color: #333; text-decoration: none; font-weight: 400; transition: color .2s, background .2s; }
+    .nav-dropdown a:hover { color: #9A488D; background: #faf7fa; }
+    .nav-dropdown .dropdown-section { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #9A488D; padding: 10px 20px 4px; pointer-events: none; }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative; overflow: hidden;
+      min-height: 220px; display: flex; align-items: center;
+      background: url('data:image/jpeg;base64,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JCPMPLHIDBVXQ0lgWTcWEWBziaEKhnZgl97JF1Ph0waSQbYUkJKLKL6oO3NSmqNK8PpklsJnuokvqkoqgpqDClFNHECAPrCEPDDITIErvu/USNyzbDBGLC9xmPYGrlFWpuwKJ1ytkYppsucSV0AEFBvh+ESxGVe/vDlvoDDnuqlmginhottuvsjEAHCFDGJENNMECDouhq+58aiRB2wCK5z1kqvCG3mUMwyKLCB0rimX00i2vnd/4T1y7ELsb82uQ6qrhpsuhtmggujiqosiitglvvlFnkiEFIvMhmgmjjgk/YZPBfY53EDDw4sveQn2aAddaMFF3jm2tjDDLqMOKiRwAlp6La1iEaqkglmqvojnpkutjmunlmokqsmJttomvrLgjmsgolMuj9yWLNTC795yyEsNRukMVaVjwoGT1hETSR9eUga35frPQq11DSngcSogkgtgvtgvmnojihqglhktgojsnknnngHLImjiruju/wBBQDsOfhNdAQBihgVdYhk3xoufzRFnWmVVpO2fOFCjTkxMoWEMq61LKYI6aYJY64pob5oY7JJLrrrY5rZK4IqoIKJ7qJZ57o+FHElUii8BcO8EjgwyD5Yh3ZMEiJtOwDRw1c9RjWwE2IIPORezPqmIL6IJ4KJ4KMIKIL74IL6J4KIIL56IIL6J6IIL6L56KKIF1333wD9598N8DwF3/wDgf8CeD/8A/QPAAIPHfHfXQfggQvPYoXXwn//EACYRAAICAgAGAgMBAQAAAAAAAAABESECURASIDAxUCJBA0BhYDL/2gAIAQIBAT8A94ko/X+o9zHpnH1wj3q7y62mvP6nKNe5juvpbb89qtErRK0StErRK0T/AAlaJWhZLQ/yLlgfs5RK0StErRK0JrRlljywkStFaK0Siiv2aMeWLGtdL/xsEd7yeCiiiF9lFFFevgWLycIaaI6kpKRK0StErRK0StErRK0StErROOiVonHROOicdGGWK8oyfU2voUTY3rg+mdlaK0N694lI2lS6KKKKKKKKKIRCIx2RjsjEohFFca++pJsjj5P+R5tnMzmZzM5n6+iijmw5YiyiiVoV+EPJeEiVolaOZREErRK0StErRRRR9d6SSSTmOZmP5HiNzwSkbSpcVji8Zbsr10EMhkMhnKzlZyszweFMSkeX0v1aKKKKIWytkLZWyFshbIXBKRv6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') center/cover no-repeat;
+    }
+    .hero-stars { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+    .hero-inner {
+      position: relative; z-index: 2;
+      max-width: 1100px; width: 100%; margin: 0 auto;
+      padding: 56px 40px;
+    }
+    .hero-eyebrow {
+      display: inline-block; font-size: 14px; font-weight: 600; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--purple); margin-bottom: 12px;
+    }
+    .hero h1 { font-size: 56px; font-weight: 800; color: var(--white); line-height: 1.1; letter-spacing: -1px; margin-bottom: 14px; }
+    .hero p { font-size: 20px; color: var(--text-dim); max-width: 520px; line-height: 1.65; font-weight: 300; }
+
+    /* ── FILTER BAR ── */
+    .filter-bar {
+      background: var(--darker); border-bottom: 1px solid var(--border);
+      padding: 16px 40px; position: sticky; top: 76px; z-index: 90;
+    }
+    .filter-bar-inner { max-width: 1100px; margin: 0 auto; display: flex; gap: 8px; align-items: center; }
+    .filter-label { font-size: 14px; color: var(--text-faint); font-weight: 500; margin-right: 4px; }
+    .filter-btn {
+      padding: 7px 16px; border-radius: 20px; border: 1px solid var(--border);
+      font-size: 14px; font-weight: 500; cursor: pointer;
+      background: transparent; color: var(--text-dim);
+      font-family: 'Rubik', sans-serif; transition: all .2s;
+    }
+    .filter-btn:hover { border-color: var(--purple); color: var(--purple); }
+    .filter-btn.active { background: var(--purple); border-color: var(--purple); color: #fff; }
+
+    /* ── SECTION ── */
+    .section { padding: 64px 40px; }
+    .section-inner { max-width: 1100px; margin: 0 auto; }
+    .section-header { margin-bottom: 40px; }
+    .section-header h2 { font-size: 30px; font-weight: 700; color: var(--white); letter-spacing: -.5px; line-height: 1.3; margin-bottom: 10px; }
+    .section-header p { font-size: 20px; color: var(--text-faint); }
+    .section-divider { width: 32px; height: 3px; background: var(--purple); margin-top: 10px; }
+    .section-title { font-size: 16px; font-weight: 700; color: var(--text-faint); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 20px; }
+
+    /* ── NEWS GRID ── */
+    .news-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+
+    .news-card {
+      background: var(--card-bg); border: 1px solid var(--border);
+      border-radius: 10px; overflow: hidden;
+      display: flex; flex-direction: column;
+      transition: box-shadow .25s, transform .25s, border-color .25s;
+      text-decoration: none; color: inherit;
+    }
+    .news-card:hover {
+      box-shadow: 0 16px 48px rgba(0,0,0,.35);
+      transform: translateY(-3px);
+      border-color: rgba(163,102,156,.4);
+    }
+    .news-card-body { padding: 22px 24px 20px; flex: 1; display: flex; flex-direction: column; gap: 0; }
+
+    .news-pub {
+      display: inline-block; font-size: 12px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .8px; color: #B09CC8; background: rgba(176,156,200,.15);
+      border: 1px solid rgba(176,156,200,.3); padding: 3px 10px; border-radius: 20px;
+      width: fit-content;
+    }
+    .news-pub-logo-area {
+      background: #fff; padding: 14px 24px;
+      display: flex; align-items: center; justify-content: center;
+      height: 70px; border-bottom: 1px solid var(--border);
+    }
+    .news-pub-logo {
+      max-height: 28px; width: auto; max-width: 100%; object-fit: contain; object-position: center;
+    }
+    .news-card:first-child .news-pub-logo {
+      max-height: 40px;
+    }
+    .news-date {
+      font-size: 14px; color: var(--text-faint); font-weight: 400; letter-spacing: .3px; margin-bottom: 10px;
+    }
+    .news-card-body h3 {
+      font-size: 18px; font-weight: 600; color: var(--white);
+      line-height: 1.4; margin-bottom: 5px;
+    }
+    .news-card-body p {
+      font-size: 16px; color: var(--text-dim); line-height: 1.65; font-weight: 300;
+    }
+    .news-link {
+      margin-top: auto; padding-top: 14px; display: inline-flex; align-items: center; gap: 6px;
+      color: #D1B8D9; font-size: 14px; font-weight: 600;
+      text-decoration: none; transition: gap .2s;
+    }
+    .news-link:hover { gap: 10px; }
+
+    /* ── FOOTER ── */
+    footer { background: #efefef; border-top: 1px solid #ddd; }
+    .footer-top { padding: 48px 40px 40px; border-bottom: 1px solid #ddd; }
+    .footer-top-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; }
+    .footer-col-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #111; margin-bottom: 16px; }
+    .footer-col-title a { color: #111; text-decoration: none; }
+    .footer-top a { display: block; font-size: 13px; color: #555; text-decoration: none; margin-bottom: 9px; transition: color .2s; }
+    .footer-top a:hover { color: #9A488D; }
+    .footer-mid { padding: 24px 40px; border-bottom: 1px solid #ddd; }
+    .footer-mid-inner { max-width: 1100px; margin: 0 auto; width: 100%; display: flex; align-items: center; justify-content: space-between; }
+    .footer-logo img { height: 60px; }
+    .footer-support { color: #555; font-size: 13px; font-weight: 600; text-decoration: none; transition: color .2s; }
+    .footer-support:hover { color: #9A488D; }
+    .footer-social { display: flex; align-items: center; gap: 16px; }
+    .footer-social a { color: #999; text-decoration: none; transition: color .2s; display: flex; align-items: center; }
+    .footer-social a:hover { color: #9A488D; }
+    .footer-social svg { width: 18px; height: 18px; }
+    .footer-demo { background: transparent; color: #9A488D; border: 1.5px solid #9A488D; padding: 7px 18px; border-radius: 4px; font-size: 13px; font-weight: 600; text-decoration: none; transition: all .2s; }
+    .footer-demo:hover { background: #9A488D; color: #fff !important; }
+    .footer-bottom { padding: 18px 40px; }
+    .footer-bottom-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; font-size: 12px; color: #888; }
+    .footer-bottom-links { display: flex; gap: 20px; }
+    .footer-bottom-links a { color: #888; text-decoration: none; transition: color .2s; }
+    .footer-bottom-links a:hover { color: #555; }
+  </style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="top-bar">
+  <a href="/es">ES</a>
+  <a href="https://viaccess-orca.my.salesforce.com/">Login</a>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo"><a href="https://www.viaccess-orca.com"><img src="https://www.viaccess-orca.com/hubfs/VO%20LOGO-1.svg" alt="Viaccess-Orca"></a></div>
+  <div class="nav-main">
+    <div class="nav-item">
+      <a href="#">TV & Video Solutions <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></a>
+      <div class="nav-dropdown">
+        <div class="dropdown-section">Connect & Deliver</div>
+        <a href="https://www.viaccess-orca.com/ott-tv">IPTV & OTT Platforms</a>
+        <a href="https://www.viaccess-orca.com/secure-player">Secure Video Player</a>
+        <a href="https://www.viaccess-orca.com/tv-apps">TV APPS</a>
+        <div class="dropdown-section">Protect & Secure</div>
+        <a href="https://www.viaccess-orca.com/tv-piracy">Anti-Piracy Services</a>
+        <a href="https://www.viaccess-orca.com/tv-piracy/dynamic-watermarking">Dynamic Watermarking</a>
+        <a href="https://www.viaccess-orca.com/conditional-access-system">CAS Solutions</a>
+        <a href="https://www.viaccess-orca.com/drm-solutions">DRM Solutions</a>
+        <div class="dropdown-section">Engage & Monetize</div>
+        <a href="https://www.viaccess-orca.com/targeted-advertising">TV Advertising Solutions</a>
+        <a href="https://www.viaccess-orca.com/tv-analytics">Data Intelligence & Personalization</a>
+        <a href="https://www.viaccess-orca.com/sports-ott-video-services">Sports Streaming</a>
+      </div>
+    </div>
+    <div class="nav-item">
+      <a href="#">About Us <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></a>
+      <div class="nav-dropdown">
+        <a href="https://www.viaccess-orca.com/who-we-are/vo-at-a-glance">Why VO</a>
+        <a href="https://www.viaccess-orca.com/customers">Customers</a>
+        <a href="https://www.viaccess-orca.com/who-we-are/partners">Partners</a>
+        <a href="https://www.viaccess-orca.com/testimonials">Success Stories</a>
+        <a href="https://www.viaccess-orca.com/careers">Careers</a>
+      </div>
+    </div>
+    <div class="nav-item">
+      <a href="#" class="active">News & Events <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></a>
+      <div class="nav-dropdown">
+        <a href="news.html">In the News</a>
+        <a href="index.html">Events</a>
+        <a href="pr.html">Press Releases</a>
+      </div>
+    </div>
+    <div class="nav-item"><a href="resources.html">Resources</a></div>
+    <div class="nav-item"><a href="blog.html">Blog</a></div>
+    <button class="nav-search" aria-label="Search">
+      <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35" stroke-linecap="round"/></svg>
+    </button>
+    <a href="https://www.viaccess-orca.com/contact" class="nav-cta">Contact Us</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <h1>VO in<br>the News</h1>
+    <p>See how Viaccess-Orca is shaping the future of TV — as covered by leading industry publications worldwide.</p>
+  </div>
+</section>
+
+<!-- FILTER BAR -->
+<div class="filter-bar">
+  <div class="filter-bar-inner">
+    <span class="filter-label">Filter:</span>
+    <button class="filter-btn active">All</button>
+    <button class="filter-btn">2026</button>
+    <button class="filter-btn">2025</button>
+    <button class="filter-btn">2024</button>
+  </div>
+</div>
+
+<!-- NEWS GRID -->
+<section class="section">
+  <div class="section-inner">
+    <div class="section-title">Latest Coverage</div>
+
+    <div class="news-grid">
+
+      <a href="https://www.broadbandtvnews.com" class="news-card">
+        <div class="news-pub-logo-area"><img class="news-pub-logo" src="https://www.viaccess-orca.com/hubfs/Newsletters/January%202018/Broadband%20TV%20News.png" alt="Broadband TV News"></div>
+        <div class="news-card-body">
+          <div class="news-date">April 16, 2026</div>
+          <h3>Viaccess-Orca supports MasOrange TV expansion and ad rollout</h3>
+          <p>VO was selected to support MasOrange's expansion of multi-brand television services and advertising initiatives across Spain.</p>
+          <span class="news-link">Read Article <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </div>
+      </a>
+
+      <a href="https://www.decodetv.com" class="news-card">
+        <div class="news-pub-logo-area"><img class="news-pub-logo" src="https://www.viaccess-orca.com/hubfs/250110-decodeTV-Logo-1.png" alt="DecodeTV"></div>
+        <div class="news-card-body">
+          <div class="news-date">March 25, 2026</div>
+          <h3>Q&A: Viaccess-Orca's Stephan Nicolas on TV service operations and Monetization</h3>
+          <p>VO executive discusses technologies designed to help service providers maintain and grow operations in a competitive streaming landscape.</p>
+          <span class="news-link">Read Article <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </div>
+      </a>
+
+      <a href="https://www.tvtechnology.com" class="news-card">
+        <div class="news-pub-logo-area"><img class="news-pub-logo" src="https://www.viaccess-orca.com/hubfs/ycvigph3fq1645099870.svg" alt="TV Technology"></div>
+        <div class="news-card-body">
+          <div class="news-date">March 19, 2026</div>
+          <h3>AI Is Becoming the Operating Layer for Media and Entertainment</h3>
+          <p>How broadcasters can advance from isolated AI achievements to intelligent, responsibility-focused infrastructure across their operations.</p>
+          <span class="news-link">Read Article <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </div>
+      </a>
+
+      <a href="https://www.tvnewscheck.com" class="news-card">
+        <div class="news-pub-logo-area"><img class="news-pub-logo" src="https://www.viaccess-orca.com/hubfs/tvn-logo-color.jpeg" alt="TVNewsCheck"></div>
+        <div class="news-card-body">
+          <div class="news-date">March 12, 2026</div>
+          <h3>NAB Show: Viaccess-Orca To Focus On Efficiency, Cost Savings</h3>
+          <p>VO highlighted its modular, cloud-native portfolio solutions at NAB Show in Las Vegas, addressing operational efficiency and service agility.</p>
+          <span class="news-link">Read Article <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </div>
+      </a>
+
+      <a href="https://www.newscaststudio.com" class="news-card">
+        <div class="news-pub-logo-area"><img class="news-pub-logo" src="https://www.viaccess-orca.com/hubfs/Screenshot%202026-01-05%20at%208.20.37.png" alt="Newscast Studio"></div>
+        <div class="news-card-body">
+          <div class="news-date">January 26, 2026</div>
+          <h3>Viewer tolerance replaces inventory growth as primary yield constraint in streaming</h3>
+          <p>Ad monetization is transitioning from maximizing ad volume toward delivering fewer, more strategically placed ads that preserve viewer experience.</p>
+          <span class="news-link">Read Article <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </div>
+      </a>
+
+      <a href="https://www.newscaststudio.com" class="news-card">
+        <div class="news-pub-logo-area"><img class="news-pub-logo" src="https://www.viaccess-orca.com/hubfs/Screenshot%202026-01-05%20at%208.20.37.png" alt="Newscast Studio"></div>
+        <div class="news-card-body">
+          <div class="news-date">January 13, 2026</div>
+          <h3>How audience data is redefining TV advertising performance</h3>
+          <p>Industry leaders favor first-party data approaches, with measurement reflecting real outcomes and real-time campaign optimization capabilities.</p>
+          <span class="news-link">Read Article <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </div>
+      </a>
+
+      <a href="https://www.tvbeurope.com" class="news-card">
+        <div class="news-pub-logo-area"><img class="news-pub-logo" src="https://www.viaccess-orca.com/hubfs/Newsletters/september_2014/TVBEurope.jpg" alt="TVBEurope"></div>
+        <div class="news-card-body">
+          <div class="news-date">January 7, 2026</div>
+          <h3>The year ahead: what will 2026 mean for media delivery, consumption and security?</h3>
+          <p>Industry experts share predictions on delivery methods, viewer behavior, and content protection priorities for the year ahead.</p>
+          <span class="news-link">Read Article <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </div>
+      </a>
+
+      <a href="https://www.tele-satellite.com" class="news-card">
+        <div class="news-pub-logo-area"><img class="news-pub-logo" src="https://www.viaccess-orca.com/hubfs/tele_satellite_et_numerique_logo.jpeg" alt="Tele Satellite & Numerique"></div>
+        <div class="news-card-body">
+          <div class="news-date">November 28, 2025</div>
+          <h3>Fransat launches the CAM EVO PRO: up to 16 simultaneous DTT channels</h3>
+          <p>Fransat's new device, powered by VO's conditional access technology, enables significantly higher channel capacity for residential buildings.</p>
+          <span class="news-link">Read Article <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </div>
+      </a>
+
+      <a href="https://www.broadcastprome.com" class="news-card">
+        <div class="news-pub-logo-area"><img class="news-pub-logo" src="https://www.viaccess-orca.com/hubfs/logo_red-1.svg" alt="Broadcast Prome"></div>
+        <div class="news-card-body">
+          <div class="news-date">November 1, 2025</div>
+          <h3>Accelerating media operations: How AI and automation are reshaping deployment strategies</h3>
+          <p>The imperative focuses on reducing overhead, improving service reliability, and delivering continuously-evolving offerings at scale.</p>
+          <span class="news-link">Read Article <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </div>
+      </a>
+
+      <a href="https://www.torrentfreak.com" class="news-card">
+        <div class="news-pub-logo-area"><img class="news-pub-logo" src="https://www.viaccess-orca.com/hubfs/download%20(1)-2.png" alt="TorrentFreak"></div>
+        <div class="news-card-body">
+          <div class="news-date">October 27, 2025</div>
+          <h3>The Streaming Piracy Crisis Suppressant That Nobody Wants To Discuss</h3>
+          <p>CDN leeching and piracy-as-a-service are highlighted as significant, largely under-addressed financial threats to the streaming industry.</p>
+          <span class="news-link">Read Article <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </div>
+      </a>
+
+      <a href="https://www.streamingmedia.com" class="news-card">
+        <div class="news-pub-logo-area"><img class="news-pub-logo" src="https://www.viaccess-orca.com/hubfs/SM-Logo.svg" alt="Streaming Media"></div>
+        <div class="news-card-body">
+          <div class="news-date">October 20, 2025</div>
+          <h3>How L-Band Advertising is Unlocking Non-Intrusive Monetization in Streaming</h3>
+          <p>L-band advertising generates streaming revenue using high-visibility, non-intrusive ad formats that preserve and enhance the viewer experience.</p>
+          <span class="news-link">Read Article <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </div>
+      </a>
+
+      <a href="https://www.newscaststudio.com" class="news-card">
+        <div class="news-pub-logo-area"><img class="news-pub-logo" src="https://www.viaccess-orca.com/hubfs/Screenshot%202026-01-05%20at%208.20.37.png" alt="Newscast Studio"></div>
+        <div class="news-card-body">
+          <div class="news-date">January 8, 2026</div>
+          <h3>How addressable advertising moves from theory to scale</h3>
+          <p>As advertising transitions to streaming platforms, broadcasters prioritize practical execution strategies over theoretical frameworks.</p>
+          <span class="news-link">Read Article <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-top-inner">
+      <div>
+        <div class="footer-col-title"><a href="https://www.viaccess-orca.com">Viaccess-Orca</a></div>
+        <a href="https://www.viaccess-orca.com/ott-tv">IPTV & OTT Platforms</a>
+        <a href="https://www.viaccess-orca.com/targeted-advertising">TV Advertising Solutions</a>
+        <a href="https://www.viaccess-orca.com/secure-player">Secure Player</a>
+        <a href="https://www.viaccess-orca.com/tv-apps">TV APPS</a>
+      </div>
+      <div>
+        <div class="footer-col-title">Protect & Secure</div>
+        <a href="https://www.viaccess-orca.com/tv-piracy/dynamic-watermarking">Dynamic Watermarking</a>
+        <a href="https://www.viaccess-orca.com/conditional-access-system">CAS Solutions</a>
+        <a href="https://www.viaccess-orca.com/tv-piracy">Anti-Piracy Solutions</a>
+        <a href="https://www.viaccess-orca.com/sports-ott-video-services">Live Sports Solutions</a>
+      </div>
+      <div>
+        <div class="footer-col-title">News & Resources</div>
+        <a href="resources.html">Resources</a>
+        <a href="blog.html">Blog</a>
+        <a href="index.html">Events</a>
+        <a href="news.html">In the News</a>
+      </div>
+      <div>
+        <div class="footer-col-title">Company</div>
+        <a href="https://www.viaccess-orca.com/who-we-are/vo-at-a-glance">Why VO</a>
+        <a href="https://www.viaccess-orca.com/customers">Customers</a>
+        <a href="https://www.viaccess-orca.com/who-we-are/partners">Partners</a>
+        <a href="https://www.viaccess-orca.com/careers">Careers</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-mid">
+    <div class="footer-mid-inner">
+      <img src="https://www.viaccess-orca.com/hubfs/Always%20EVOLVE_Grey-sm.svg" alt="Always Evolve" style="height:48px; opacity:.7;">
+      <div class="footer-social">
+        <a href="https://www.facebook.com/pages/Orca-Interactive/173831905982882" title="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
+        <a href="https://twitter.com/ViaccessOrca" title="X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+        <a href="https://www.youtube.com/ViaccessOrca" title="YouTube"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 00-1.95 1.96A29 29 0 001 12a29 29 0 00.46 5.58a2.78 2.78 0 001.95 1.95C5.12 20 12 20 12 20s6.88 0 8.59-.47a2.78 2.78 0 001.95-1.95A29 29 0 0023 12a29 29 0 00-.46-5.58zM9.75 15.02V8.98L15.5 12z"/></svg></a>
+        <a href="https://www.linkedin.com/company/viaccess-orca" title="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg></a>
+        <a href="https://viaccess-orca.my.salesforce.com/" class="footer-support">Customer Support</a>
+        <a href="https://www.viaccess-orca.com/request-a-demo" class="footer-demo">Request a demo</a>
+      </div>
+      <div class="footer-logo"><img src="https://www.viaccess-orca.com/hubfs/VO-LOGO-footer.png" alt="Viaccess-Orca"></div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-bottom-inner">
+      <span>Copyright © 2026 Viaccess, trading as Viaccess-Orca. All Rights Reserved.</span>
+      <div class="footer-bottom-links">
+        <a href="https://www.viaccess-orca.com/privacy-policy">Privacy Policy</a>
+        <a href="https://www.viaccess-orca.com/hubfs/Cookie%20policy%20Viaccess-Orca.pdf">Cookie Policy</a>
+        <a href="https://www.viaccess-orca.com/legal-notice">Legal Notice</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
